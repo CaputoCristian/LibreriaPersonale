@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.libreria.DTO.BookUpdateDTO;
-import org.libreria.DuplicateIsbnException;
+import org.libreria.exceptions.DuplicateIsbnException;
 import org.libreria.model.Book;
 import org.libreria.model.Library;
 
