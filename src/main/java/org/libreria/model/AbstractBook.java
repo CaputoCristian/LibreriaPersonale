@@ -1,4 +1,4 @@
-package org.libreria.books;
+package org.libreria.model;
 
 public abstract class AbstractBook {
     protected String title;

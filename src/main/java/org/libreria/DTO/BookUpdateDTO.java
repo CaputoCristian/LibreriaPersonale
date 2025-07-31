@@ -1,6 +1,7 @@
 package org.libreria.DTO;
 
-import org.libreria.books.AbstractBook;
+import org.libreria.model.AbstractBook;
+import org.libreria.model.Book;
 
 public class BookUpdateDTO extends AbstractBook {
     private String title;
@@ -13,6 +14,22 @@ public class BookUpdateDTO extends AbstractBook {
     private boolean genreModified;
     private boolean ratingModified;
     private boolean readingStatusModified;
+
+    public BookUpdateDTO(Book book) {
+        title = book.getTitle();
+        author = book.getAuthor();
+        genre = book.getGenre();
+        rating = book.getRating();
+        readingStatus = book.getReadingStatus();
+        titleModified = true;
+        authorModified = true;
+        genreModified = true;
+        ratingModified = true;
+        readingStatusModified = true;
+    }
+
+    public BookUpdateDTO() {
+    }
 
     public static class Builder {
         private final BookUpdateDTO dto;
