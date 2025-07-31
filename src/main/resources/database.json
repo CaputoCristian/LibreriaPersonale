@@ -1,0 +1,18 @@
+{
+  "books" : [ {
+    "title" : "1984",
+    "author" : "George Orwell",
+    "isbn" : "9780451524935",
+    "genre" : "Distopia",
+    "rating" : 4,
+    "readingStatus" : "in lettura"
+  }, {
+    "title" : "Il nome della rosa",
+    "author" : "Umberto Eco",
+    "isbn" : "9788804498511",
+    "genre" : "Giallo storico",
+    "rating" : 5,
+    "readingStatus" : "letto"
+  }
+  ]
+}

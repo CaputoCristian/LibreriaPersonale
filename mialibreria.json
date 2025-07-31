@@ -1,0 +1,10 @@
+{
+  "books" : [ {
+    "title" : "Il nome della rosa",
+    "author" : "Umberto Eco",
+    "isbn" : "9788804498511",
+    "genre" : "Giallo storico",
+    "rating" : 5,
+    "readingStatus" : "letto"
+  } ]
+}

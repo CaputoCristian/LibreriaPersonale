@@ -5,7 +5,7 @@ public abstract class AbstractBook {
     protected String author;
     protected String isbn;
     protected String genre;
-    protected int rating; // 1-5
+    protected Integer rating; // 1-5
     protected String readingStatus; // "letto", "in lettura", "da leggere"
 
     public AbstractBook() {
@@ -56,7 +56,7 @@ public abstract class AbstractBook {
         this.genre = genre;
     }
 
-    public int getRating() {
+    public Integer getRating() {
         return rating;
     }
 

@@ -6,7 +6,7 @@ public class Book extends AbstractBook {
         super();
     }
 
-    public Book(String title, String author, String isbn, String genre, int rating, String readingStatus) {
+    public Book(String title, String author, String isbn, String genre, Integer rating, String readingStatus) {
         super(title, author, isbn, genre, rating, readingStatus);
     }
 
