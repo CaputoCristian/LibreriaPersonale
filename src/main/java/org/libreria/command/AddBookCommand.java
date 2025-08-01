@@ -6,9 +6,9 @@ import org.libreria.model.Library;
 
 public class AddBookCommand implements Command {
     private final Library library;
-    private final BookUpdateDTO book;
+    private final Book book;
 
-    public AddBookCommand(Library library, BookUpdateDTO book) {
+    public AddBookCommand(Library library, Book book) {
         this.library = library;
         this.book = book;
     }

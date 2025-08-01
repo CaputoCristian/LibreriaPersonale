@@ -4,8 +4,8 @@
     "author" : "George Orwell",
     "isbn" : "9780451524935",
     "genre" : "distopia",
-    "rating" : 5,
-    "readingStatus" : "letto"
+    "rating" : 4,
+    "readingStatus" : "In lettura"
   }, {
     "title" : "Il nome della rosa",
     "author" : "Umberto Eco",
@@ -27,5 +27,12 @@
     "genre" : "Istruzione",
     "rating" : 2,
     "readingStatus" : "in lettura"
+  }, {
+    "title" : "Fahrenheit 451",
+    "author" : "Ray Bradbury",
+    "isbn" : "9788804780373",
+    "genre" : "Distopica",
+    "rating" : 5,
+    "readingStatus" : "Da leggere"
   } ]
 }

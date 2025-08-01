@@ -7,6 +7,8 @@ import org.libreria.command.DeleteBookCommand;
 import org.libreria.command.UpdateBookCommand;
 import org.libreria.model.Book;
 import org.libreria.singleton.LibrarySingleton;
+import org.libreria.template.AddBookDialog;
+import org.libreria.template.UpdateBookDialog;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -61,24 +63,56 @@ public class LibraryGUI extends JFrame {
 
         refreshButton.addActionListener(e -> loadBooks());
 
+//        addButton.addActionListener(e -> {
+//            BookFormDialog dialog = new BookFormDialog(this);
+//            BookUpdateDTO book = dialog.showDialog();
+//            if (book != null) {
+//                Command command = new AddBookCommand(LibrarySingleton.getInstance().getLibrary(), book);
+//                command.execute();
+//
+//                LibrarySingleton.getInstance().saveBooksToJson(new File("database.json"));
+//
+//                loadBooks();
+//            }
+//        });
+//
+//        editButton.addActionListener(e -> {
+//            int selectedRow = bookTable.getSelectedRow();
+//            if (selectedRow >= 0) {
+//                Book selectedBook = tableModel.getBookAt(selectedRow);
+//                BookFormDialog dialog = new BookFormDialog(this, selectedBook);
+//                BookUpdateDTO updatedBook = dialog.showDialog();
+//                if (updatedBook != null) {
+//                    Command command = new UpdateBookCommand(LibrarySingleton.getInstance().getLibrary(), updatedBook);
+//                    command.execute();
+//
+//                    LibrarySingleton.getInstance().saveBooksToJson(new File("database.json"));
+//                    loadBooks();
+//                }
+//            } else {
+//                JOptionPane.showMessageDialog(this, "Seleziona un libro da modificare.", "Nessuna selezione", JOptionPane.WARNING_MESSAGE);
+//            }
+//        });
+
+        // Aggiunta libro
         addButton.addActionListener(e -> {
-            BookFormDialog dialog = new BookFormDialog(this);
-            BookUpdateDTO book = dialog.showDialog();
-            if (book != null) {
-                Command command = new AddBookCommand(LibrarySingleton.getInstance().getLibrary(), book);
+            AddBookDialog dialog = new AddBookDialog(this);
+            Book newBook = dialog.showDialog();
+            if (newBook != null) {
+                Command command = new AddBookCommand(LibrarySingleton.getInstance().getLibrary(), newBook);
                 command.execute();
 
                 LibrarySingleton.getInstance().saveBooksToJson(new File("database.json"));
-
                 loadBooks();
             }
         });
 
+        // Modifica libro
         editButton.addActionListener(e -> {
             int selectedRow = bookTable.getSelectedRow();
             if (selectedRow >= 0) {
                 Book selectedBook = tableModel.getBookAt(selectedRow);
-                BookFormDialog dialog = new BookFormDialog(this, selectedBook);
+                UpdateBookDialog dialog = new UpdateBookDialog(this, selectedBook);
                 BookUpdateDTO updatedBook = dialog.showDialog();
                 if (updatedBook != null) {
                     Command command = new UpdateBookCommand(LibrarySingleton.getInstance().getLibrary(), updatedBook);
