@@ -7,8 +7,11 @@ import org.libreria.command.DeleteBookCommand;
 import org.libreria.command.UpdateBookCommand;
 import org.libreria.model.Book;
 import org.libreria.singleton.LibrarySingleton;
+import org.libreria.strategy.SortStrategy;
+import org.libreria.strategy.SortStrategyManager;
 import org.libreria.template.AddBookDialog;
 import org.libreria.template.UpdateBookDialog;
+import org.libreria.util.SortMode;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -16,6 +19,7 @@ import java.awt.*;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class LibraryGUI extends JFrame {
@@ -24,6 +28,9 @@ public class LibraryGUI extends JFrame {
 //    private DefaultTableModel tableModel;
     private BookTableModel tableModel;
     private JButton addButton, editButton, deleteButton, searchButton, sortButton, refreshButton;
+
+    private final SortStrategyManager sortManager = new SortStrategyManager();
+    private SortMode currentSortMode = SortMode.BY_INSERTION;       //default
 
     public LibraryGUI() {
         setTitle("Gestione Libreria Personale");
@@ -48,7 +55,7 @@ public class LibraryGUI extends JFrame {
         editButton = new JButton("Modifica");
         deleteButton = new JButton("Elimina");
         searchButton = new JButton("Cerca");
-        sortButton = new JButton("Ordina");
+        sortButton = new JButton("Ordina per: Inserimento");
         refreshButton = new JButton("Aggiorna");
 
         buttonPanel.add(addButton);
@@ -189,7 +196,16 @@ public class LibraryGUI extends JFrame {
             }
         });
 
+        sortButton.addActionListener(e -> {
+            SortStrategy strategy = sortManager.nextStrategy();
+            List<Book> sorted = strategy.sort(LibrarySingleton.getInstance().getLibrary().getBooks());
 
+            sortButton.setText("Ordina per " + strategy.getName());
+
+            BookTableModel model = new BookTableModel(sorted);
+            bookTable.setModel(model);
+
+        });
 
         loadBooks();
     }

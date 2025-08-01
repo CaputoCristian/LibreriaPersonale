@@ -13,4 +13,10 @@ public class RatingSortStrategy implements SortStrategy {
                 .sorted(Comparator.comparing(Book::getRating).reversed())
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public String getName() {
+        return "Valutazione";
+    }
+
 }
