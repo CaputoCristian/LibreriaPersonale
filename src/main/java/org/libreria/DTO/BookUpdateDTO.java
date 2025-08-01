@@ -6,11 +6,13 @@ import org.libreria.model.Book;
 public class BookUpdateDTO extends AbstractBook {
     private String title;
     private String author;
+    private String isbn;
     private String genre;
     private Integer rating;
     private String readingStatus;
     private boolean titleModified;
     private boolean authorModified;
+    private boolean isbnModified;
     private boolean genreModified;
     private boolean ratingModified;
     private boolean readingStatusModified;
@@ -18,11 +20,13 @@ public class BookUpdateDTO extends AbstractBook {
     public BookUpdateDTO(Book book) {
         title = book.getTitle();
         author = book.getAuthor();
+        isbn = book.getIsbn();
         genre = book.getGenre();
         rating = book.getRating();
         readingStatus = book.getReadingStatus();
         titleModified = true;
         authorModified = true;
+        isbnModified = true;
         genreModified = true;
         ratingModified = true;
         readingStatusModified = true;
@@ -50,6 +54,12 @@ public class BookUpdateDTO extends AbstractBook {
             return this;
         }
 
+        public Builder isbn(String isbn) {
+            dto.isbn = isbn;
+            dto.isbnModified = true;
+            return this;
+        }
+
         public Builder genre(String genre) {
             dto.genre = genre;
             dto.genreModified = true;
@@ -71,11 +81,14 @@ public class BookUpdateDTO extends AbstractBook {
         public BookUpdateDTO build() {
             return dto;
         }
+
+
     }
 
     // Getters
     public String getTitle() { return title; }
     public String getAuthor() { return author; }
+    public String getIsbn() { return isbn; }
     public String getGenre() { return genre; }
     public Integer getRating() { return rating; }
     public String getReadingStatus() { return readingStatus; }
@@ -83,6 +96,7 @@ public class BookUpdateDTO extends AbstractBook {
     // Modificato checkers
     public boolean isTitleModified() { return titleModified; }
     public boolean isAuthorModified() { return authorModified; }
+    public boolean isIsbnModified() { return isbnModified; }
     public boolean isGenreModified() { return genreModified; }
     public boolean isRatingModified() { return ratingModified; }
     public boolean isReadingStatusModified() { return readingStatusModified; }

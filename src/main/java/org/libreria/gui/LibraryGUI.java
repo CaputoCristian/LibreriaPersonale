@@ -19,7 +19,8 @@ import java.util.List;
 public class LibraryGUI extends JFrame {
 
     private JTable bookTable;
-    private DefaultTableModel tableModel;
+//    private DefaultTableModel tableModel;
+    private BookTableModel tableModel;
     private JButton addButton, editButton, deleteButton, searchButton, sortButton, refreshButton;
 
     public LibraryGUI() {
@@ -28,11 +29,14 @@ public class LibraryGUI extends JFrame {
         setSize(800, 600);
         setLocationRelativeTo(null);
 
+        LibrarySingleton.getInstance().loadBooksFromJson(new File("database.json"));
+        System.out.println("Libri caricati: " + LibrarySingleton.getInstance().getLibrary().getBooks().size());
+
         bookTable = new JTable(); // inizializzazione base
         bookTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-        tableModel = new DefaultTableModel(new Object[]{"Titolo", "Autore", "ISBN", "Genere", "Valutazione", "Stato"}, 0);
-        BookTableModel tableModel = new BookTableModel(LibrarySingleton.getInstance().getLibrary().getBooks());
+//        tableModel = new DefaultTableModel(new Object[]{"Titolo", "Autore", "ISBN", "Genere", "Valutazione", "Stato"}, 0);
+        tableModel = new BookTableModel(LibrarySingleton.getInstance().getLibrary().getBooks());
         bookTable.setModel(tableModel);
         JScrollPane scrollPane = new JScrollPane(bookTable);
         add(scrollPane, BorderLayout.CENTER);
@@ -59,7 +63,7 @@ public class LibraryGUI extends JFrame {
 
         addButton.addActionListener(e -> {
             BookFormDialog dialog = new BookFormDialog(this);
-            Book book = dialog.showDialog();
+            BookUpdateDTO book = dialog.showDialog();
             if (book != null) {
                 Command command = new AddBookCommand(LibrarySingleton.getInstance().getLibrary(), book);
                 command.execute();
@@ -73,11 +77,11 @@ public class LibraryGUI extends JFrame {
         editButton.addActionListener(e -> {
             int selectedRow = bookTable.getSelectedRow();
             if (selectedRow >= 0) {
-                BookUpdateDTO selectedBookDTO = new BookUpdateDTO( tableModel.getBookAt(selectedRow) );
-                BookFormDialog dialog = new BookFormDialog(this, selectedBookDTO);
-                Book updatedBook = dialog.showDialog();
+                Book selectedBook = tableModel.getBookAt(selectedRow);
+                BookFormDialog dialog = new BookFormDialog(this, selectedBook);
+                BookUpdateDTO updatedBook = dialog.showDialog();
                 if (updatedBook != null) {
-                    Command command = new UpdateBookCommand(LibrarySingleton.getInstance().getLibrary(), selectedBookDTO);
+                    Command command = new UpdateBookCommand(LibrarySingleton.getInstance().getLibrary(), updatedBook);
                     command.execute();
 
                     LibrarySingleton.getInstance().saveBooksToJson(new File("database.json"));
@@ -87,6 +91,27 @@ public class LibraryGUI extends JFrame {
                 JOptionPane.showMessageDialog(this, "Seleziona un libro da modificare.", "Nessuna selezione", JOptionPane.WARNING_MESSAGE);
             }
         });
+
+//        deleteButton.addActionListener(e -> {
+//            int selectedRow = bookTable.getSelectedRow();
+//            if (selectedRow >= 0) {
+//                Book selectedBook = tableModel.getBookAt(selectedRow);
+//                int confirm = JOptionPane.showConfirmDialog(this,
+//                        "Sei sicuro di voler eliminare il libro selezionato?",
+//                        "Conferma eliminazione",
+//                        JOptionPane.YES_NO_OPTION);
+//
+//                if (confirm == JOptionPane.YES_OPTION) {
+//                    Command command = new DeleteBookCommand(LibrarySingleton.getInstance().getLibrary(), selectedBook.getIsbn());
+//                    command.execute();
+//
+//                    LibrarySingleton.getInstance().saveBooksToJson(new File("database.json"));
+//                    loadBooks();
+//                }
+//            } else {
+//                JOptionPane.showMessageDialog(this, "Seleziona un libro da eliminare.", "Nessuna selezione", JOptionPane.WARNING_MESSAGE);
+//            }
+//        });
 
         deleteButton.addActionListener(e -> {
             int selectedRow = bookTable.getSelectedRow();
@@ -98,16 +123,38 @@ public class LibraryGUI extends JFrame {
                         JOptionPane.YES_NO_OPTION);
 
                 if (confirm == JOptionPane.YES_OPTION) {
-                    Command command = new DeleteBookCommand(LibrarySingleton.getInstance().getLibrary(), selectedBook.getIsbn());
-                    command.execute();
+                    try {
+                        Command command = new DeleteBookCommand(LibrarySingleton.getInstance().getLibrary(),
+                                selectedBook.getIsbn());
+                        command.execute();
 
-                    LibrarySingleton.getInstance().saveBooksToJson(new File("database.json"));
-                    loadBooks();
+                        // Rimuovi prima dal modello
+                        tableModel.removeBookAt(selectedRow);
+
+                        // Poi salva su file
+                        LibrarySingleton.getInstance().saveBooksToJson(new File("database.json"));
+
+                        // Aggiungi un log per debug
+                        System.out.println("Libro eliminato: " + selectedBook.getTitle());
+                        System.out.println("Libri rimanenti: " +
+                                LibrarySingleton.getInstance().getLibrary().getBooks().size());
+
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(this,
+                                "Errore durante l'eliminazione: " + ex.getMessage(),
+                                "Errore",
+                                JOptionPane.ERROR_MESSAGE);
+                        ex.printStackTrace();
+                    }
                 }
             } else {
-                JOptionPane.showMessageDialog(this, "Seleziona un libro da eliminare.", "Nessuna selezione", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(this,
+                        "Seleziona un libro da eliminare.",
+                        "Nessuna selezione",
+                        JOptionPane.WARNING_MESSAGE);
             }
         });
+
 
 
         loadBooks();
@@ -126,27 +173,36 @@ public class LibraryGUI extends JFrame {
 //        bookTable.setModel(tableModel);
 //    }
 
-    private void loadBooks() {
-        tableModel.setRowCount(0); // pulisce la tabella
-        List<Book> books = LibrarySingleton.getInstance().getLibrary().getBooks();
-        for (Book book : books) {
-            tableModel.addRow(new Object[]{
-                    book.getTitle(),
-                    book.getAuthor(),
-                    book.getIsbn(),
-                    book.getGenre(),
-                    book.getRating(),
-                    book.getReadingStatus()
-            });
-        }
+//    private void loadBooks() {
+//        tableModel.setRowCount(0); // pulisce la tabella
+//        List<Book> books = LibrarySingleton.getInstance().getLibrary().getBooks();
+//        for (Book book : books) {
+//            tableModel.addRow(new Object[]{
+//                    book.getTitle(),
+//                    book.getAuthor(),
+//                    book.getIsbn(),
+//                    book.getGenre(),
+//                    book.getRating(),
+//                    book.getReadingStatus()
+//            });
+//        }
+//
+//        BookTableModel tableModel = new BookTableModel(new ArrayList<>(LibrarySingleton.getInstance().getLibrary().getBooks()));
+//        bookTable.setModel(tableModel);
+//    }
 
-        BookTableModel tableModel = new BookTableModel(new ArrayList<>(LibrarySingleton.getInstance().getLibrary().getBooks()));
-        bookTable.setModel(tableModel);
+    private void loadBooks() {
+        List<Book> books = LibrarySingleton.getInstance().getLibrary().getBooks();
+        tableModel.setBooks(books);
+
+        System.out.println("Aggiornamento tabella con " + books.size() + " libri");
+
     }
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             new LibraryGUI().setVisible(true);
+
         });
     }
 }

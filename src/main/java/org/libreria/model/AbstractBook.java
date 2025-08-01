@@ -41,12 +41,29 @@ public abstract class AbstractBook {
         return isbn;
     }
 
+//    public void setIsbn(String isbn) {
+//        if (isbn == null || !isbn.matches("^(\\d{10}|\\d{13}|(\\d{1,5}-\\d{1,7}-\\d{1,7}-[\\dX]))$")) {
+//            throw new IllegalArgumentException("ISBN non valido. Deve contenere 10 o 13 cifre, con al più un trattino.");
+//        }
+//        this.isbn = isbn;
+//    }
+
     public void setIsbn(String isbn) {
-        if (isbn == null || !isbn.matches("^(\\d{10}|\\d{13}|(\\d{1,5}-\\d{1,7}-\\d{1,7}-[\\dX]))$")) {
-            throw new IllegalArgumentException("ISBN non valido. Deve contenere 10 o 13 cifre, con al più un trattino.");
+        if (isbn == null) {
+            throw new IllegalArgumentException("ISBN non può essere null.");
         }
+
+        // Rimuovi tutti i trattini e spazi per la validazione
+        String cleanIsbn = isbn.replaceAll("[-\\s]", "");
+
+        // Verifica che ci siano solo numeri (e possibilmente X alla fine per ISBN-10)
+        if (!cleanIsbn.matches("^\\d{10}$|^\\d{13}$|^\\d{9}X$")) {
+            throw new IllegalArgumentException("ISBN non valido. Deve contenere 10 o 13 cifre, con eventuali trattini.");
+        }
+
         this.isbn = isbn;
     }
+
 
     public String getGenre() {
         return genre;

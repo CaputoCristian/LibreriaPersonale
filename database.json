@@ -1,10 +1,31 @@
 {
   "books" : [ {
-    "title" : "!984",
+    "title" : "1984",
     "author" : "George Orwell",
     "isbn" : "9780451524935",
-    "genre" : "Distopia",
-    "rating" : 4,
+    "genre" : "distopia",
+    "rating" : 5,
+    "readingStatus" : "letto"
+  }, {
+    "title" : "Il nome della rosa",
+    "author" : "Umberto Eco",
+    "isbn" : "9788804498511",
+    "genre" : "Giallo storico",
+    "rating" : 3,
+    "readingStatus" : "letto"
+  }, {
+    "title" : "Tutte le barzellette su Totti",
+    "author" : "Francesco Totti",
+    "isbn" : "8804523379",
+    "genre" : "Comico",
+    "rating" : 5,
+    "readingStatus" : "letto"
+  }, {
+    "title" : "CiccioGamer89 Presenta Fortnite. Trucchi e Segreti",
+    "author" : "Cicciogamer89",
+    "isbn" : "8893675056",
+    "genre" : "Istruzione",
+    "rating" : 2,
     "readingStatus" : "in lettura"
   } ]
 }

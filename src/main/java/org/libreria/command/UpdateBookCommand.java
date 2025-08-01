@@ -42,7 +42,6 @@ public class UpdateBookCommand implements Command {
 //        bookToUpdate.setRating(dto.getRating());
 //        bookToUpdate.setReadingStatus(dto.getReadingStatus());
 
-
     }
 
     @Override

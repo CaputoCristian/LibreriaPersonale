@@ -31,8 +31,9 @@ public class Library extends AbstractLibrary {
 
     @Override
     public boolean removeBook(String isbn) {
-        return books.remove(isbn);
+        return books.removeIf(book -> book.getIsbn().equals(isbn));
     }
+
 
     @Override
     public boolean updateBook(String isbn, BookUpdateDTO updateDTO) {
@@ -46,6 +47,10 @@ public class Library extends AbstractLibrary {
             if (updateDTO.isTitleModified()) {
                 bookToUpdate.setTitle(updateDTO.getTitle());
             }
+
+//            if (updateDTO.isIsbnModified()) {
+//                bookToUpdate.setIsbn(updateDTO.getTitle());
+//            }
 
             if (updateDTO.isAuthorModified()) {
                 bookToUpdate.setAuthor(updateDTO.getAuthor());

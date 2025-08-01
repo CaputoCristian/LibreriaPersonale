@@ -4,12 +4,13 @@ import org.libreria.DTO.BookUpdateDTO;
 import org.libreria.model.Book;
 
 import javax.swing.table.AbstractTableModel;
+import java.util.ArrayList;
 import java.util.List;
 
 public class BookTableModel extends AbstractTableModel {
 
-    private final String[] columnNames = {"Titolo", "Autore", "Anno", "Genere", "Rating"};
-    private final List<Book> books;
+    private final String[] columnNames = {"Titolo", "Autore", "Isbn", "Genere", "Rating", "Stato"};
+    private List<Book> books;
 
     public BookTableModel(List<Book> books) {
         this.books = books;
@@ -48,11 +49,17 @@ public class BookTableModel extends AbstractTableModel {
         return books.get(rowIndex);
     }
 
+//    public void setBooks(List<Book> newBooks) {
+//        books.clear();
+//        books.addAll(newBooks);
+//        fireTableDataChanged();
+//    }
+
     public void setBooks(List<Book> newBooks) {
-        books.clear();
-        books.addAll(newBooks);
+        this.books = new ArrayList<>(newBooks);  // Crea una nuova lista invece di usare clear() e addAll()
         fireTableDataChanged();
     }
+
 
     public void removeBookAt(int rowIndex) {
         books.remove(rowIndex);

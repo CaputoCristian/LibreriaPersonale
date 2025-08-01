@@ -1,0 +1,229 @@
+@startuml
+package org.libreria {
+    package model {
+        abstract class AbstractBook {
+            # String title
+            # String author
+            # String isbn
+            # String genre
+            # Integer rating
+            # String readingStatus
+            + AbstractBook()
+            + AbstractBook(title: String, author: String, isbn: String, genre: String, rating: int, readingStatus: String)
+            + getTitle(): String
+            + setTitle(title: String): void
+            + getAuthor(): String
+            + setAuthor(author: String): void
+            + getIsbn(): String
+            + setIsbn(isbn: String): void
+            + getGenre(): String
+            + setGenre(genre: String): void
+            + getRating(): Integer
+            + setRating(rating: int): void
+            + getReadingStatus(): String
+            + setReadingStatus(status: String): void
+        }
+
+        class Book {
+            + Book()
+            + Book(title: String, author: String, isbn: String, genre: String, rating: Integer, readingStatus: String)
+            + toString(): String
+        }
+
+        abstract class AbstractLibrary {
+        }
+
+        class Library {
+        }
+
+        Book --|> AbstractBook
+        Library --|> AbstractLibrary
+    }
+
+    package command {
+        interface Command {
+            + execute(): void
+            + undo(): void
+        }
+
+        class AddBookCommand {
+            - library: Library
+            - book: BookUpdateDTO
+            + AddBookCommand(library: Library, book: BookUpdateDTO)
+            + execute(): void
+            + undo(): void
+        }
+
+        class DeleteBookCommand {
+            + execute(): void
+            + undo(): void
+        }
+
+        class UpdateBookCommand {
+            + execute(): void
+            + undo(): void
+        }
+
+        Command <|.. AddBookCommand
+        Command <|.. DeleteBookCommand
+        Command <|.. UpdateBookCommand
+    }
+
+    package gui {
+        class LibraryGUI {
+            - bookTable: JTable
+            - tableModel: BookTableModel
+            + LibraryGUI()
+            - loadBooks(): void
+        }
+
+        class BookFormDialog {
+            - bookResult: BookUpdateDTO
+            + BookFormDialog(parent: JFrame)
+            + BookFormDialog(parent: JFrame, bookToEdit: Book)
+            + showDialog(): BookUpdateDTO
+        }
+    }
+
+    package singleton {
+        class LibrarySingleton {
+            - instance: LibrarySingleton
+            + getInstance(): LibrarySingleton
+            + getLibrary(): Library
+        }
+    }
+}
+
+' Relazioni tra pacchetti
+LibraryGUI ..> Command: uses
+LibraryGUI ..> LibrarySingleton: uses
+AddBookCommand ..> Book: creates
+LibrarySingleton --> Library: contains
+BookFormDialog ..> Book: uses
+
+package org.libreria.strategy {
+    interface SearchStrategy {
+        + search(books: List<Book>, query: String): List<Book>
+    }
+
+    interface SortStrategy {
+        + sort(books: List<Book>): List<Book>
+    }
+
+    class TitleSearchStrategy {
+        + search(books: List<Book>, query: String): List<Book>
+    }
+
+    class AuthorSearchStrategy {
+        + search(books: List<Book>, query: String): List<Book>
+    }
+
+    class TitleSortStrategy {
+        + sort(books: List<Book>): List<Book>
+    }
+
+    class RatingSortStrategy {
+        + sort(books: List<Book>): List<Book>
+    }
+
+    SearchStrategy <|.. TitleSearchStrategy
+    SearchStrategy <|.. AuthorSearchStrategy
+    SortStrategy <|.. TitleSortStrategy
+    SortStrategy <|.. RatingSortStrategy
+}
+
+package org.libreria.DTO {
+    class BookUpdateDTO {
+        - String title
+        - String author
+        - String isbn
+        - String genre
+        - Integer rating
+        - String readingStatus
+        + Builder builder()
+        + static fromBook(Book): BookUpdateDTO
+    }
+
+    class BookUpdateDTO.Builder {
+        + title(String): Builder
+        + author(String): Builder
+        + isbn(String): Builder
+        + genre(String): Builder
+        + rating(Integer): Builder
+        + readingStatus(String): Builder
+        + build(): BookUpdateDTO
+    }
+}
+
+' Additional relationships
+BookUpdateDTO ..> Book: converts
+LibraryGUI ..> BookUpdateDTO: uses
+BookFormDialog ..> BookUpdateDTO: creates
+Library ..> SearchStrategy: uses
+Library ..> SortStrategy: uses
+
+' ... (previous code remains the same)
+
+package org.libreria.gui {
+    class BookTableModel {
+        - String[] columnNames
+        - List<Book> books
+        + BookTableModel(books: List<Book>)
+        + getRowCount(): int
+        + getColumnCount(): int
+        + getValueAt(rowIndex: int, columnIndex: int): Object
+        + getColumnName(column: int): String
+        + getBookAt(rowIndex: int): Book
+        + setBooks(newBooks: List<Book>): void
+        + removeBookAt(rowIndex: int): void
+        + addBook(book: Book): void
+        + updateBook(rowIndex: int, updatedBook: Book): void
+    }
+}
+
+package org.libreria.utilities {
+    class GUIController {
+        - static LibraryGUI gui
+        + static void initializeGUI()
+        + static void updateTable()
+    }
+
+    class DataBaseController {
+        - static String databasePath
+        + static void initializeDatabase()
+        + static void saveToDatabase(Library library)
+        + static Library loadFromDatabase()
+    }
+}
+
+' Additional relationships
+BookTableModel --|> AbstractTableModel
+LibraryGUI --> BookTableModel
+GUIController --> LibraryGUI
+DataBaseController --> Library
+LibrarySingleton ..> DataBaseController: uses
+
+package org.libreria.factory {
+    interface BookFactory {
+        + createBook(): Book
+    }
+
+    class StandardBookFactory {
+        + createBook(): Book
+    }
+
+    BookFactory <|.. StandardBookFactory
+}
+
+package org.libreria.exceptions {
+    class InvalidISBNException extends RuntimeException
+    class BookNotFoundException extends RuntimeException
+    class InvalidRatingException extends RuntimeException
+}
+
+' Relationships with exceptions
+Library ..> BookNotFoundException: throws
+BookFormDialog ..> InvalidISBNException: throws
+BookFormDialog ..> InvalidRatingException: throws
+
+@enduml

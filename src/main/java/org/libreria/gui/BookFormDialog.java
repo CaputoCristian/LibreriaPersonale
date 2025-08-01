@@ -17,7 +17,7 @@ public class BookFormDialog extends JDialog {
     private JButton confirmButton;
     private JButton cancelButton;
 
-    private Book bookResult;
+    private BookUpdateDTO bookResult;
 
     // Costruttore per aggiunta
     public BookFormDialog(JFrame parent) {
@@ -25,7 +25,7 @@ public class BookFormDialog extends JDialog {
     }
 
     // Costruttore per modifica
-    public BookFormDialog(JFrame parent, BookUpdateDTO bookToEdit) {
+    public BookFormDialog(JFrame parent, Book bookToEdit) {
         super(parent, true);
         setTitle(bookToEdit == null ? "Aggiungi Libro" : "Modifica Libro");
         setSize(300, 250);
@@ -33,7 +33,7 @@ public class BookFormDialog extends JDialog {
         setLayout(new BorderLayout());
 
         // Campi input
-        JPanel inputPanel = new JPanel(new GridLayout(5, 2, 5, 5));
+        JPanel inputPanel = new JPanel(new GridLayout(6, 2, 5, 5));
         inputPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         inputPanel.add(new JLabel("Titolo:"));
@@ -45,12 +45,12 @@ public class BookFormDialog extends JDialog {
         inputPanel.add(authorField);
 
         inputPanel.add(new JLabel("ISBN:"));
-        genreField = new JTextField();
-        inputPanel.add(genreField);
-
-        inputPanel.add(new JLabel("ISBN:"));
         isbnField = new JTextField();
         inputPanel.add(isbnField);
+
+        inputPanel.add(new JLabel("Genere:"));
+        genreField = new JTextField();
+        inputPanel.add(genreField);
 
         inputPanel.add(new JLabel("Rating (0-5):"));
         ratingField = new JTextField();
@@ -78,10 +78,38 @@ public class BookFormDialog extends JDialog {
             genreField.setText(bookToEdit.getGenre());
             ratingField.setText(String.valueOf(bookToEdit.getRating()));
             readingStatusField.setText(bookToEdit.getReadingStatus());
-//            isbnField.setEnabled(false); // L'ISBN non va modificato
+            isbnField.setEnabled(false); // L'ISBN non va modificato
         }
 
         // Azione del bottone conferma
+//        confirmButton.addActionListener(e -> {
+//            String title = titleField.getText().trim();
+//            String author = authorField.getText().trim();
+//            String isbn = isbnField.getText().trim();
+//            String genre = genreField.getText().trim();
+//            String ratingText = ratingField.getText().trim();
+//            String readingStatus = readingStatusField.getText().trim();
+//
+//            // isbn.isEmpty()
+//            if (title.isEmpty() || author.isEmpty() || genre.isEmpty() || ratingText.isEmpty() || readingStatus.isEmpty()) {
+//                JOptionPane.showMessageDialog(this, "Tutti i campi sono obbligatori.");
+//                return;
+//            }
+//
+//            int rating;
+//            try {
+//                rating = Integer.parseInt(ratingText);
+//                if (rating < 0 || rating > 5) throw new NumberFormatException();
+//            } catch (NumberFormatException ex) {
+//                JOptionPane.showMessageDialog(this, "Il rating deve essere un numero tra 0 e 5.");
+//                return;
+//            }
+//
+//
+//            bookResult = new BookUpdateDTO(title, author, isbn, genre, rating, readingStatus);
+//            dispose();
+//        });
+
         confirmButton.addActionListener(e -> {
             String title = titleField.getText().trim();
             String author = authorField.getText().trim();
@@ -90,23 +118,48 @@ public class BookFormDialog extends JDialog {
             String ratingText = ratingField.getText().trim();
             String readingStatus = readingStatusField.getText().trim();
 
-            if (title.isEmpty() || author.isEmpty() || isbn.isEmpty() || ratingText.isEmpty()) {
+            // Validazione campi
+            if (title.isEmpty() || author.isEmpty() || isbn.isEmpty()
+                    || genre.isEmpty() || ratingText.isEmpty() || readingStatus.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Tutti i campi sono obbligatori.");
                 return;
             }
 
-            int rating;
-            try {
-                rating = Integer.parseInt(ratingText);
-                if (rating < 0 || rating > 5) throw new NumberFormatException();
-            } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(this, "Il rating deve essere un numero tra 0 e 5.");
+            // Aggiungere questa validazione dopo il controllo dei campi vuoti
+            if (!isbn.matches("^\\d{10}$|^\\d{13}$|^\\d{9}X$")) {
+                JOptionPane.showMessageDialog(this,
+                        "L'ISBN deve contenere 10 o 13 cifre, con eventuali trattini.",
+                        "ISBN non valido",
+                        JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
-            bookResult = new Book(title, author, isbn, genre, rating, readingStatus);
-            dispose();
+
+            try {
+                int rating = Integer.parseInt(ratingText);
+                if (rating < 0 || rating > 5) {
+                    JOptionPane.showMessageDialog(this, "Il rating deve essere un numero tra 0 e 5.");
+                    return;
+                }
+
+                // Utilizzo del Builder pattern per creare il DTO
+                BookUpdateDTO bookDTO = new BookUpdateDTO.Builder()
+                        .title(title)
+                        .author(author)
+                        .isbn(isbn)
+                        .genre(genre)
+                        .rating(rating)
+                        .readingStatus(readingStatus)
+                        .build();
+
+                bookResult = bookDTO;
+                dispose();
+
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this, "Il rating deve essere un numero valido.");
+            }
         });
+
 
         // Azione del bottone annulla
         cancelButton.addActionListener(e -> {
@@ -115,7 +168,7 @@ public class BookFormDialog extends JDialog {
         });
     }
 
-    public Book showDialog() {
+    public BookUpdateDTO showDialog() {
         setVisible(true);
         return bookResult;
     }
