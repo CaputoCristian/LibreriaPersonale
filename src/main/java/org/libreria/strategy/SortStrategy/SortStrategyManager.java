@@ -1,4 +1,4 @@
-package org.libreria.strategy;
+package org.libreria.strategy.SortStrategy;
 
 import java.util.List;
 
@@ -8,7 +8,7 @@ public class SortStrategyManager {
 
     public SortStrategyManager() {
         strategies = List.of(
-//                new InsertionOrderSortStrategy(),
+                new InsertionOrderSortStrategy(),
                 new TitleSortStrategy(),
                 new AuthorSortStrategy()
         );

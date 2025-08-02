@@ -6,20 +6,22 @@ import org.libreria.command.Command;
 import org.libreria.command.DeleteBookCommand;
 import org.libreria.command.UpdateBookCommand;
 import org.libreria.model.Book;
+import org.libreria.model.SearchFilter;
 import org.libreria.singleton.LibrarySingleton;
-import org.libreria.strategy.SortStrategy;
-import org.libreria.strategy.SortStrategyManager;
+import org.libreria.strategy.SearchStrategy.AuthorSearchStrategy;
+import org.libreria.strategy.SearchStrategy.FilteredSearchStrategy;
+import org.libreria.strategy.SearchStrategy.SearchStrategy;
+import org.libreria.strategy.SearchStrategy.TitleSearchStrategy;
+import org.libreria.strategy.SortStrategy.SortStrategy;
+import org.libreria.strategy.SortStrategy.SortStrategyManager;
 import org.libreria.template.AddBookDialog;
 import org.libreria.template.UpdateBookDialog;
 import org.libreria.util.SortMode;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 public class LibraryGUI extends JFrame {
@@ -55,7 +57,7 @@ public class LibraryGUI extends JFrame {
         editButton = new JButton("Modifica");
         deleteButton = new JButton("Elimina");
         searchButton = new JButton("Cerca");
-        sortButton = new JButton("Ordina per: Inserimento");
+        sortButton = new JButton("Ordina per Inserimento");
         refreshButton = new JButton("Aggiorna");
 
         buttonPanel.add(addButton);
@@ -207,6 +209,31 @@ public class LibraryGUI extends JFrame {
 
         });
 
+        searchButton.addActionListener(e -> {
+            SearchDialog dialog = new SearchDialog(this);
+            SearchFilter filter = dialog.showDialog();
+            if (filter != null) {
+                SearchStrategy baseStrategy = filter.isSearchByTitle()
+                        ? new TitleSearchStrategy()
+                        : new AuthorSearchStrategy();
+
+                SearchStrategy fullStrategy = new FilteredSearchStrategy(
+                        baseStrategy,
+                        filter.getReadingStatusFilter(),
+                        filter.getMinRating()
+                );
+
+                LibrarySingleton.getInstance().setSearchStrategy(fullStrategy);
+                List<Book> results = LibrarySingleton.getInstance().search(
+                        LibrarySingleton.getInstance().getLibrary().getBooks(),
+                        filter.getSearchTerm()
+                );
+
+                tableModel.setBooks(results);
+            }
+        });
+
+        sortManager.nextStrategy(); //Necessario, altrimenti il primo click su "Ordina" non modifica nulla
         loadBooks();
     }
 

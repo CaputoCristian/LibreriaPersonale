@@ -1,4 +1,4 @@
-package org.libreria.strategy;
+package org.libreria.strategy.SearchStrategy;
 
 import org.libreria.model.Book;
 

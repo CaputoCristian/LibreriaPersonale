@@ -1,15 +1,16 @@
-package org.libreria.strategy;
+package org.libreria.strategy.SearchStrategy;
 
 import org.libreria.model.Book;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class AuthorSearchStrategy implements SearchStrategy {
+public class TitleSearchStrategy implements SearchStrategy {
+
     @Override
     public List<Book> search(List<Book> books, String keyword) {
         return books.stream()
-                .filter(b -> b.getAuthor().toLowerCase().contains(keyword.toLowerCase()))
+                .filter(b -> b.getTitle().toLowerCase().contains(keyword.toLowerCase()))
                 .collect(Collectors.toList());
     }
 }
