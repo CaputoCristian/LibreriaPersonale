@@ -2,7 +2,7 @@ package org.libreria.gui;
 
 import org.libreria.DTO.BookUpdateDTO;
 import org.libreria.command.AddBookCommand;
-import org.libreria.command.Command;
+import org.libreria.command.CommandInterface;
 import org.libreria.command.DeleteBookCommand;
 import org.libreria.command.UpdateBookCommand;
 import org.libreria.model.Book;
@@ -108,7 +108,7 @@ public class LibraryGUI extends JFrame {
             AddBookDialog dialog = new AddBookDialog(this);
             Book newBook = dialog.showDialog();
             if (newBook != null) {
-                Command command = new AddBookCommand(LibrarySingleton.getInstance().getLibrary(), newBook);
+                CommandInterface command = new AddBookCommand(LibrarySingleton.getInstance().getLibrary(), newBook);
                 command.execute();
 
                 LibrarySingleton.getInstance().saveBooksToJson(new File("database.json"));
@@ -124,7 +124,7 @@ public class LibraryGUI extends JFrame {
                 UpdateBookDialog dialog = new UpdateBookDialog(this, selectedBook);
                 BookUpdateDTO updatedBook = dialog.showDialog();
                 if (updatedBook != null) {
-                    Command command = new UpdateBookCommand(LibrarySingleton.getInstance().getLibrary(), updatedBook);
+                    CommandInterface command = new UpdateBookCommand(LibrarySingleton.getInstance().getLibrary(), updatedBook);
                     command.execute();
 
                     LibrarySingleton.getInstance().saveBooksToJson(new File("database.json"));
@@ -167,7 +167,7 @@ public class LibraryGUI extends JFrame {
 
                 if (confirm == JOptionPane.YES_OPTION) {
                     try {
-                        Command command = new DeleteBookCommand(LibrarySingleton.getInstance().getLibrary(),
+                        CommandInterface command = new DeleteBookCommand(LibrarySingleton.getInstance().getLibrary(),
                                 selectedBook.getIsbn());
                         command.execute();
 

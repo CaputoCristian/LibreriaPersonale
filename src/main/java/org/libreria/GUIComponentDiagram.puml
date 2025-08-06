@@ -1,0 +1,88 @@
+@startuml GUI and Template Component Diagram
+
+skinparam class {
+    BackgroundColor<<GUI>> LightBlue
+    BackgroundColor<<Template>> LightGreen
+}
+
+package "GUI" {
+    class LibraryGUI <<GUI>> {
+        - bookTable: JTable
+        - tableModel: BookTableModel
+        - buttons: JButton[]
+        - sortManager: SortStrategyManager
+        - currentSortMode: SortMode
+        + LibraryGUI()
+        - loadBooks(): void
+    }
+
+    class BookTableModel <<GUI>> {
+        - columnNames: String[]
+        - books: List<Book>
+        + getRowCount(): int
+        + getColumnCount(): int
+        + getValueAt(row: int, col: int): Object
+        + getColumnName(col: int): String
+        + getBookAt(row: int): Book
+        + setBooks(books: List<Book>): void
+        + removeBookAt(row: int): void
+    }
+
+    class SearchDialog <<GUI>> {
+        - searchField: JTextField
+        - searchTypeCombo: JComboBox
+        - statusCombo: JComboBox
+        - ratingSpinner: JSpinner
+        + SearchDialog(parent: Frame)
+        + showDialog(): SearchFilter
+    }
+}
+
+package "Template" {
+    abstract class BookDialogTemplate <<Template>> {
+        # parent: Frame
+        # titleField: JTextField
+        # authorField: JTextField
+        # isbnField: JTextField
+        # genreField: JTextField
+        # ratingSpinner: JSpinner
+        # statusCombo: JComboBox
+        + {abstract} createFields(): void
+        + {abstract} validateInput(): boolean
+        + {abstract} processResult(): Object
+        # createDialog(): void
+        # initializeComponents(): void
+        + showDialog(): Object
+    }
+
+    class AddBookDialog <<Template>> {
+        + AddBookDialog(parent: Frame)
+        + createFields(): void
+        + validateInput(): boolean
+        + processResult(): Book
+    }
+
+    class UpdateBookDialog <<Template>> {
+        - originalBook: Book
+        - modifiedFields: Set<String>
+        + UpdateBookDialog(parent: Frame, book: Book)
+        + createFields(): void
+        + validateInput(): boolean
+        + processResult(): BookUpdateDTO
+    }
+}
+
+' Relazioni interne GUI
+LibraryGUI *-- BookTableModel
+LibraryGUI --> SearchDialog : creates
+
+' Relazioni Template
+BookDialogTemplate <|-- AddBookDialog
+BookDialogTemplate <|-- UpdateBookDialog
+
+' Relazioni tra GUI e Template
+LibraryGUI --> AddBookDialog : creates
+LibraryGUI --> UpdateBookDialog : creates
+
+@enduml
+

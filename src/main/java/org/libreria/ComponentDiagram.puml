@@ -1,0 +1,73 @@
+@startuml Library Component Diagram
+'https://plantuml.com/component-diagram
+
+skinparam component {
+  BackgroundColor<<UI>> LightBlue
+  BackgroundColor<<Controller>> LightGreen
+  BackgroundColor<<Model>> LightYellow
+  BackgroundColor<<Utility>> LightGray
+}
+
+package "GUI" {
+  [LibraryGUI]<<UI>>
+  [SearchDialog]<<UI>>
+  [AddBookDialog]<<UI>>
+  [UpdateBookDialog]<<UI>>
+  [BookTableModel]<<UI>>
+}
+
+package "Controller" {
+  [DataBaseController]<<Controller>>
+}
+
+package "Model" {
+  [Library]<<Model>>
+  [Book]<<Model>>
+  [SearchFilter]<<Model>>
+
+
+
+
+
+
+}
+
+package "Command" {
+  [AddBookCommand]<<Controller>>
+  [DeleteBookCommand]<<Controller>>
+  [UpdateBookCommand]<<Controller>>
+}
+
+package "Strategy" {
+  [SearchStrategy]<<Utility>>
+  [SortStrategy]<<Utility>>
+}
+
+package "Singleton" {
+  [LibrarySingleton]<<Utility>>
+}
+
+' Relazioni
+LibraryGUI --> AddBookDialog
+LibraryGUI --> UpdateBookDialog
+LibraryGUI --> SearchDialog
+LibraryGUI --> BookTableModel
+LibraryGUI --> LibrarySingleton
+
+LibrarySingleton --> DataBaseController
+LibrarySingleton --> Library
+
+AddBookCommand --> Library
+DeleteBookCommand --> Library
+UpdateBookCommand --> Library
+
+LibraryGUI --> AddBookCommand
+LibraryGUI --> DeleteBookCommand
+LibraryGUI --> UpdateBookCommand
+
+LibraryGUI --> SearchStrategy
+LibraryGUI --> SortStrategy
+
+BookTableModel --> Book
+
+@enduml

@@ -1,10 +1,9 @@
 package org.libreria.command;
 
-import org.libreria.DTO.BookUpdateDTO;
 import org.libreria.model.Book;
 import org.libreria.model.Library;
 
-public class AddBookCommand implements Command {
+public class AddBookCommand implements CommandInterface {
     private final Library library;
     private final Book book;
 

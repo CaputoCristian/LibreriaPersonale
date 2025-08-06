@@ -1,6 +1,6 @@
 package org.libreria.command;
 
-public interface Command {
+public interface CommandInterface {
     void execute();
     void undo();
 }

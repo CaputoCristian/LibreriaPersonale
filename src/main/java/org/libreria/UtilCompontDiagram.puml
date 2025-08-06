@@ -1,0 +1,35 @@
+@startuml Util Diagram
+
+skinparam class {
+    BackgroundColor<<Utility>> LightGray
+    BorderColor Black
+    ArrowColor Black
+}
+
+package "util" {
+    enum SortMode {
+        BY_TITLE
+        BY_AUTHOR
+        BY_RATING
+        BY_INSERTION
+        + next(): SortMode
+        + getSortStrategy(): SortStrategy
+    }
+
+    class JsonHandler {
+        + {static} loadBooks(File): List<Book>
+        + {static} saveBooks(File, List<Book>): void
+    }
+}
+
+package "Strategy.Sort" {
+    class SortStrategy {
+    }
+
+}
+
+
+' Relazioni
+SortMode ..>  SortStrategy : creates
+
+@enduml

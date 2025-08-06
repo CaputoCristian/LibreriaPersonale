@@ -1,0 +1,80 @@
+@startuml Model Component Diagram
+
+skinparam class {
+    BackgroundColor LightYellow
+    BorderColor Black
+    ArrowColor Black
+}
+
+package "Model" {
+    abstract class AbstractBook {
+        # title: String
+        # author: String
+        # isbn: String
+        # genre: String
+        # rating: int
+        # readingStatus: String
+        + getters()
+        + setters()
+    }
+
+    abstract class AbstractLibrary {
+        # books: List<Book>
+        + {abstract} getBookByIsbn(String): Book
+        + {abstract} addBook(Book)
+        + {abstract} removeBook(String): boolean
+        + {abstract} updateBook(String, BookUpdateDTO): boolean
+        + getBooks(): List<Book>
+        + setBooks(List<Book>)
+    }
+
+    class Book {
+        + Book()
+        + Book(title, author, isbn, genre, rating, status)
+        + toString(): String
+    }
+
+    class Library {
+        + Library()
+        + Library(List<Book>)
+        + getBookByIsbn(String): Book
+        + addBook(Book)
+        + removeBook(String): boolean
+        + updateBook(String, BookUpdateDTO): boolean
+    }
+
+    class SearchFilter {
+        - searchTerm: String
+        - searchByTitle: boolean
+        - readingStatusFilter: String
+        - minRating: Integer
+        + getSearchTerm()
+        + isSearchByTitle()
+        + getReadingStatusFilter()
+        + getMinRating()
+    }
+
+    class BookUpdateDTO {
+        - title: String
+        - author: String
+        - isbn: String
+        - genre: String
+        - rating: int
+        - readingStatus: String
+        - modified flags: boolean
+        + getters()
+        + setters()
+        + isFieldModified()
+    }
+}
+
+' Relazioni
+AbstractLibrary <|-- Library
+AbstractBook <|-- Book
+Library "1" *-- "0..*" Book : contiene
+BookUpdateDTO ..> Book : << converte >>
+SearchFilter ..> Book : << filtra >>
+AbstractLibrary o-- AbstractBook
+
+@enduml
+

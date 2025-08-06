@@ -3,7 +3,7 @@ package org.libreria.command;
 import org.libreria.model.Book;
 import org.libreria.model.Library;
 
-public class DeleteBookCommand implements Command {
+public class DeleteBookCommand implements CommandInterface {
     private final Library library;
     private final String isbn;
     private Book deletedBook;

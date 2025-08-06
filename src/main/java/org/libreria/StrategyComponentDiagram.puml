@@ -1,0 +1,78 @@
+@startuml Strategy Diagram
+
+skinparam class {
+    BackgroundColor<<Strategy>> LightGreen
+    BorderColor Black
+    ArrowColor Black
+}
+
+package "Strategy" {
+    package "SearchStrategyPackage" {
+        interface SearchStrategy {
+            + search(books: List<Book>, keyword: String): List<Book>
+        }
+
+        class TitleSearchStrategy {
+            + search(books: List<Book>, keyword: String): List<Book>
+        }
+
+        class AuthorSearchStrategy {
+            + search(books: List<Book>, keyword: String): List<Book>
+        }
+
+        class FilteredSearchStrategy {
+            - baseStrategy: SearchStrategy
+            - statusFilter: String
+            - minRating: Integer
+            + FilteredSearchStrategy(baseStrategy: SearchStrategy, statusFilter: String, minRating: Integer)
+            + search(books: List<Book>, keyword: String): List<Book>
+        }
+    }
+
+    package "SortStrategyPackage" {
+        interface SortStrategy {
+            + sort(books: List<Book>): List<Book>
+            + getName(): String
+        }
+
+        class AuthorSortStrategy {
+            + sort(books: List<Book>): List<Book>
+            + getName(): String
+        }
+
+        class TitleSortStrategy {
+            + sort(books: List<Book>): List<Book>
+            + getName(): String
+        }
+
+
+        class InsertionSortStrategy {
+            + sort(books: List<Book>): List<Book>
+            + getName(): String
+        }
+
+        class SortStrategyManager {
+            - currentStrategyIndex: int
+            - strategies: List<SortStrategy>
+            + SortStrategyManager()
+            + nextStrategy(): SortStrategy
+            + getCurrentStrategy(): SortStrategy
+        }
+    }
+}
+
+' Relazioni SearchStrategy
+SearchStrategy <|.. TitleSearchStrategy
+SearchStrategy <|.. AuthorSearchStrategy
+SearchStrategy <|.. FilteredSearchStrategy
+
+' Ha un riferimento a SearchStrategy (composizione)
+FilteredSearchStrategy *-- SearchStrategy : decora >
+
+' Relazioni SortStrategy
+SortStrategy <|.. AuthorSortStrategy
+SortStrategy <|.. TitleSortStrategy
+SortStrategy <|.. InsertionSortStrategy
+SortStrategyManager o-- SortStrategy
+
+@enduml

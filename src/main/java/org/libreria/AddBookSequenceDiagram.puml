@@ -1,0 +1,66 @@
+@startuml Add Book Sequence
+
+skinparam sequence {
+    ParticipantBackgroundColor LightBlue
+    ParticipantBorderColor Black
+    LifeLineBackgroundColor LightGray
+}
+
+actor User
+participant "LibraryGUI" as GUI
+participant "AddBookDialog" as Dialog
+participant "AddBookCommand" as Command
+participant "LibrarySingleton" as Singleton
+participant "Library" as Lib
+participant "JsonHandler" as Json
+participant "BookTableModel" as Model
+
+User -> GUI: click "Aggiungi"
+activate GUI
+
+GUI -> Dialog: new AddBookDialog()
+activate Dialog
+GUI -> Dialog: showDialog()
+
+User -> Dialog: inserisce dati libro
+Dialog --> GUI: return newBook
+deactivate Dialog
+
+GUI -> Command: new AddBookCommand(library, newBook)
+activate Command
+
+GUI -> Command: execute()
+Command -> Lib: addBook(newBook)
+activate Lib
+Lib --> Command: success
+deactivate Lib
+
+Command --> GUI: success
+deactivate Command
+
+GUI -> Singleton: saveBooksToJson(file)
+activate Singleton
+Singleton -> Json: saveBooks(file, books)
+activate Json
+Json --> Singleton: success
+deactivate Json
+Singleton --> GUI: success
+deactivate Singleton
+
+GUI -> GUI: loadBooks()
+activate GUI
+GUI -> Singleton: getLibrary().getBooks()
+activate Singleton
+Singleton --> GUI: books list
+deactivate Singleton
+
+GUI -> Model: setBooks(books)
+activate Model
+Model --> GUI: success
+deactivate Model
+
+GUI --> User: aggiorna vista
+deactivate GUI
+deactivate GUI
+
+@enduml

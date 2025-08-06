@@ -4,7 +4,7 @@ import org.libreria.DTO.BookUpdateDTO;
 import org.libreria.model.Book;
 import org.libreria.model.Library;
 
-public class UpdateBookCommand implements Command {
+public class UpdateBookCommand implements CommandInterface {
     private final Library library;
     private final BookUpdateDTO dto;
 
