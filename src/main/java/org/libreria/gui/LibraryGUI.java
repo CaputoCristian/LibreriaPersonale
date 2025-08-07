@@ -16,6 +16,7 @@ import org.libreria.strategy.SortStrategy.SortStrategy;
 import org.libreria.strategy.SortStrategy.SortStrategyManager;
 import org.libreria.template.AddBookDialog;
 import org.libreria.template.UpdateBookDialog;
+import org.libreria.util.LibraryController;
 import org.libreria.util.SortMode;
 
 import javax.swing.*;
@@ -31,7 +32,10 @@ public class LibraryGUI extends JFrame {
     private BookTableModel tableModel;
     private JButton addButton, editButton, deleteButton, searchButton, sortButton, refreshButton;
 
-    private final SortStrategyManager sortManager = new SortStrategyManager();
+    private LibraryController libraryController;
+    private File jsonFile;
+
+    private final SortStrategyManager sortManager = new SortStrategyManager(); //Necessario qua e non nel controller, per nome sul tasto
     private SortMode currentSortMode = SortMode.BY_INSERTION;       //default
 
     public LibraryGUI() {
@@ -40,7 +44,9 @@ public class LibraryGUI extends JFrame {
         setSize(800, 600);
         setLocationRelativeTo(null);
 
-        LibrarySingleton.getInstance().loadBooksFromJson(new File("database.json"));
+        jsonFile = new File("database.json");
+        LibrarySingleton.getInstance().setSource(jsonFile);
+        libraryController = new LibraryController();
         System.out.println("Libri caricati: " + LibrarySingleton.getInstance().getLibrary().getBooks().size());
 
         bookTable = new JTable(); // inizializzazione base
@@ -108,11 +114,16 @@ public class LibraryGUI extends JFrame {
             AddBookDialog dialog = new AddBookDialog(this);
             Book newBook = dialog.showDialog();
             if (newBook != null) {
-                CommandInterface command = new AddBookCommand(LibrarySingleton.getInstance().getLibrary(), newBook);
-                command.execute();
+//                CommandInterface command = new AddBookCommand(LibrarySingleton.getInstance().getLibrary(), newBook);
+//                command.execute();
+//
+//                LibrarySingleton.getInstance().saveBooksToJson(new File("database.json"));
+//                loadBooks();
 
-                LibrarySingleton.getInstance().saveBooksToJson(new File("database.json"));
-                loadBooks();
+                libraryController.addBook(newBook);
+                loadBooks(); //Aumenta la complessità temporale, spesso è superfluo rileggere da file, ma se così si è sicuri dell'aggiunta: si evita di aggiungere alla lista libri
+                             //che per qualsiasi motivo non sono stati salvati (e non hanno sollevato errori)
+
             }
         });
 
@@ -122,13 +133,17 @@ public class LibraryGUI extends JFrame {
             if (selectedRow >= 0) {
                 Book selectedBook = tableModel.getBookAt(selectedRow);
                 UpdateBookDialog dialog = new UpdateBookDialog(this, selectedBook);
-                BookUpdateDTO updatedBook = dialog.showDialog();
-                if (updatedBook != null) {
-                    CommandInterface command = new UpdateBookCommand(LibrarySingleton.getInstance().getLibrary(), updatedBook);
-                    command.execute();
+                BookUpdateDTO bookToUpdate = dialog.showDialog();
+                if (bookToUpdate != null) {
+//                    CommandInterface command = new UpdateBookCommand(LibrarySingleton.getInstance().getLibrary(), updatedBook);
+//                    command.execute();
+//
+//                    LibrarySingleton.getInstance().saveBooksToJson(new File("database.json"));
+//                    loadBooks();
 
-                    LibrarySingleton.getInstance().saveBooksToJson(new File("database.json"));
-                    loadBooks();
+                    libraryController.updateBook(bookToUpdate);
+                    loadBooks(); //Aumenta la complessità temporale, spesso è superfluo rileggere da file, ma se così si è sicuri dell'aggiunta: si evita di aggiungere alla lista libri
+                    //che per qualsiasi motivo non sono stati salvati (e non hanno sollevato errori)
                 }
             } else {
                 JOptionPane.showMessageDialog(this, "Seleziona un libro da modificare.", "Nessuna selezione", JOptionPane.WARNING_MESSAGE);
@@ -167,15 +182,10 @@ public class LibraryGUI extends JFrame {
 
                 if (confirm == JOptionPane.YES_OPTION) {
                     try {
-                        CommandInterface command = new DeleteBookCommand(LibrarySingleton.getInstance().getLibrary(),
-                                selectedBook.getIsbn());
-                        command.execute();
+//                        CommandInterface command = new DeleteBookCommand(LibrarySingleton.getInstance().getLibrary(), selectedBook.getIsbn());
+//                        command.execute();
 
-                        // Rimuovi prima dal modello
-                        tableModel.removeBookAt(selectedRow);
-
-                        // Poi salva su file
-                        LibrarySingleton.getInstance().saveBooksToJson(new File("database.json"));
+                        libraryController.deleteBook(selectedBook.getIsbn());
 
                         // Aggiungi un log per debug
                         System.out.println("Libro eliminato: " + selectedBook.getTitle());
@@ -200,9 +210,11 @@ public class LibraryGUI extends JFrame {
 
         sortButton.addActionListener(e -> {
             SortStrategy strategy = sortManager.nextStrategy();
-            List<Book> sorted = strategy.sort(LibrarySingleton.getInstance().getLibrary().getBooks());
+//            List<Book> sorted = strategy.sort(LibrarySingleton.getInstance().getLibrary().getBooks());
+//
+//            sortButton.setText("Ordina per " + strategy.getName());
 
-            sortButton.setText("Ordina per " + strategy.getName());
+            List<Book> sorted = libraryController.sortBooks(strategy);
 
             BookTableModel model = new BookTableModel(sorted);
             bookTable.setModel(model);
@@ -212,25 +224,27 @@ public class LibraryGUI extends JFrame {
         searchButton.addActionListener(e -> {
             SearchDialog dialog = new SearchDialog(this);
             SearchFilter filter = dialog.showDialog();
-            if (filter != null) {
-                SearchStrategy baseStrategy = filter.isSearchByTitle()
-                        ? new TitleSearchStrategy()
-                        : new AuthorSearchStrategy();
+//            if (filter != null) {
+//                SearchStrategy baseStrategy = filter.isSearchByTitle()
+//                        ? new TitleSearchStrategy()
+//                        : new AuthorSearchStrategy();
+//
+//                SearchStrategy fullStrategy = new FilteredSearchStrategy(
+//                        baseStrategy,
+//                        filter.getReadingStatusFilter(),
+//                        filter.getMinRating()
+//                );
+//
+//                LibrarySingleton.getInstance().setSearchStrategy(fullStrategy);
+//                List<Book> results = LibrarySingleton.getInstance().search(
+//                        LibrarySingleton.getInstance().getLibrary().getBooks(),
+//                        filter.getSearchTerm()
+//                );
 
-                SearchStrategy fullStrategy = new FilteredSearchStrategy(
-                        baseStrategy,
-                        filter.getReadingStatusFilter(),
-                        filter.getMinRating()
-                );
-
-                LibrarySingleton.getInstance().setSearchStrategy(fullStrategy);
-                List<Book> results = LibrarySingleton.getInstance().search(
-                        LibrarySingleton.getInstance().getLibrary().getBooks(),
-                        filter.getSearchTerm()
-                );
+                List<Book> results = libraryController.searchBooks(filter);
 
                 tableModel.setBooks(results);
-            }
+             //}
         });
 
         sortManager.nextStrategy(); //Necessario, altrimenti il primo click su "Ordina" non modifica nulla

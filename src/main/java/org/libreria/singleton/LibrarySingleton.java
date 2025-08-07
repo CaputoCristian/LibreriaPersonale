@@ -16,7 +16,7 @@ public class LibrarySingleton {
     private Library library;
     private SearchStrategy searchStrategy;
     private SortStrategy sortStrategy;
-
+    private File jsonFile;
 
     private LibrarySingleton() {
         library = new Library();
@@ -29,18 +29,23 @@ public class LibrarySingleton {
         return instance;
     }
 
+    public void setSource(File jsonFile) {
+        this.jsonFile = jsonFile;
+    }
+
+
     public Library getLibrary() {
         return library;
     }
 
-    public void loadBooksFromJson(File jsonFile) {
+    public void loadBooksFromJson() {
         List<Book> books = JsonHandler.loadBooks(jsonFile);
         for (Book book : books) {
             library.addBook(book);
         }
     }
 
-    public void saveBooksToJson(File jsonFile) {
+    public void saveBooksToJson() {
         JsonHandler.saveBooks(jsonFile, library.getBooks());
     }
 
