@@ -1,0 +1,48 @@
+@startuml Sort Sequence Diagram
+'https://plantuml.com/sequence-diagram
+
+skinparam sequence {
+    ParticipantBackgroundColor LightBlue
+    ParticipantBorderColor Black
+    LifeLineBackgroundColor LightGray
+}
+
+actor User
+participant "LibraryGUI" as GUI
+participant "LibraryController" as Controller
+participant "SortStrategyManager" as Manager
+participant "SortStrategy" as Strategy
+participant "BookTableModel" as Model
+
+User -> GUI: click "Ordina"
+activate GUI
+
+GUI -> Manager: nextStrategy()
+activate Manager
+Manager -> GUI: return strategy
+deactivate Manager
+
+GUI --> Controller: sortBooks(strategy)
+activate Controller
+
+Controller --> Strategy: sort(library.getBooks())
+activate Strategy
+Strategy --> Controller: success
+deactivate Strategy
+
+Controller --> GUI: return sorted
+deactivate Controller
+
+GUI --> Model: new BookTableModel(sorted)
+activate Model
+Model --> GUI: return model
+deactivate Model
+
+GUI --> GUI: bookTable.setModel(model);
+activate GUI
+deactivate GUI
+
+GUI --> User: aggiorna vista
+deactivate GUI
+
+@enduml

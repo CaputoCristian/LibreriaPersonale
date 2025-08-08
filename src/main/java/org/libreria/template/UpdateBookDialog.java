@@ -12,7 +12,7 @@ public class UpdateBookDialog extends BookDialogTemplate {
     public UpdateBookDialog(JFrame parent, Book bookToEdit) {
         super(parent, "Modifica Libro");
 
-        // Precompilazione
+        // Precompilazione con dati esistenti
         titleField.setText(bookToEdit.getTitle());
         authorField.setText(bookToEdit.getAuthor());
         isbnField.setText(bookToEdit.getIsbn());

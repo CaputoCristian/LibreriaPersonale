@@ -1,0 +1,28 @@
+@startuml
+
+skinparam componentStyle uml2
+
+' GUI
+[LibraryGUI] <<component>>
+
+' Controller
+[LibraryController] <<component>>
+
+' Comandi
+[Command] <<component>>
+
+' Json
+[JsonManager] <<component>>
+
+' Strategie
+[Strategy] <<component>>
+
+' Relazioni
+[LibraryGUI] -(0- [LibraryController]
+
+[LibraryController] -(0- [Command]
+[LibraryController] -(0- [Strategy]
+
+[Command] -(0- [JsonManager]
+
+@enduml

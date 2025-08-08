@@ -4,8 +4,6 @@ import org.libreria.model.Book;
 
 import java.util.List;
 
-
-//DECORATOR ?
 public class FilteredSearchStrategy implements SearchStrategy {
     private final SearchStrategy base;
     private final String readingStatus;

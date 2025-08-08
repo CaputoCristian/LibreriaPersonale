@@ -14,25 +14,39 @@
     "rating" : 3,
     "readingStatus" : "letto"
   }, {
-    "title" : "Tutte le barzellette su Totti",
-    "author" : "Francesco Totti",
-    "isbn" : "8804523379",
-    "genre" : "Comico",
-    "rating" : 5,
-    "readingStatus" : "letto"
-  }, {
-    "title" : "CiccioGamer89 Presenta Fortnite. Trucchi e Segreti",
-    "author" : "Cicciogamer89",
-    "isbn" : "8893675056",
-    "genre" : "Istruzione",
-    "rating" : 2,
-    "readingStatus" : "in lettura"
-  }, {
     "title" : "Fahrenheit 451",
     "author" : "Ray Bradbury",
     "isbn" : "9788804780373",
     "genre" : "Distopica",
     "rating" : 5,
     "readingStatus" : "Da leggere"
+  }, {
+    "title": "Il signore degli anelli",
+    "author": "J.R.R. Tolkien",
+    "isbn": "9788804668235",
+    "genre": "Fantasy epico",
+    "rating": 5,
+    "readingStatus": "Da leggere"
+  }, {
+    "title": "La coscienza di Zeno",
+    "author": "Italo Svevo",
+    "isbn": "9788806207319",
+    "genre": "Narrativa italiana",
+    "rating": 4,
+    "readingStatus": "Letto"
+  }, {
+    "title": "Critica della ragion pura",
+    "author": "Immanuel Kant",
+    "isbn": "9788807900202",
+    "genre": "Filosofia teoretica",
+    "rating": 3,
+    "readingStatus": "Da leggere"
+  }, {
+    "title": "Il mondo come volontà e rappresentazione",
+    "author": "Arthur Schopenhauer",
+    "isbn": "9788807900219",
+    "genre": "Filosofia",
+    "rating": 4,
+    "readingStatus": "Da leggere"
   } ]
 }

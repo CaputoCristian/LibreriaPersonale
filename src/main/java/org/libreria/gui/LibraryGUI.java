@@ -291,9 +291,10 @@ public class LibraryGUI extends JFrame {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
+
+//        SwingUtilities.invokeLater(() -> {
             new LibraryGUI().setVisible(true);
 
-        });
+//        });
     }
 }
