@@ -44,8 +44,8 @@ public class LibraryGUI extends JFrame {
         setSize(800, 600);
         setLocationRelativeTo(null);
 
-        jsonFile = new File("database.json");
-        LibrarySingleton.getInstance().setSource(jsonFile);
+//        jsonFile = new File("database.json");
+//        LibrarySingleton.getInstance().setSource(jsonFile);
         libraryController = new LibraryController();
         System.out.println("Libri caricati: " + LibrarySingleton.getInstance().getLibrary().getBooks().size());
 
@@ -133,15 +133,16 @@ public class LibraryGUI extends JFrame {
             if (selectedRow >= 0) {
                 Book selectedBook = tableModel.getBookAt(selectedRow);
                 UpdateBookDialog dialog = new UpdateBookDialog(this, selectedBook);
-                BookUpdateDTO bookToUpdate = dialog.showDialog();
-                if (bookToUpdate != null) {
+//                BookUpdateDTO bookToUpdate = dialog.showDialog();
+                Book updatedBook = dialog.showDialog();
+                if (updatedBook != null) {
 //                    CommandInterface command = new UpdateBookCommand(LibrarySingleton.getInstance().getLibrary(), updatedBook);
 //                    command.execute();
 //
 //                    LibrarySingleton.getInstance().saveBooksToJson(new File("database.json"));
 //                    loadBooks();
 
-                    libraryController.updateBook(bookToUpdate);
+                    libraryController.updateBook(updatedBook);
                     loadBooks(); //Aumenta la complessità temporale, spesso è superfluo rileggere da file, ma se così si è sicuri dell'aggiunta: si evita di aggiungere alla lista libri
                     //che per qualsiasi motivo non sono stati salvati (e non hanno sollevato errori)
                 }
@@ -292,9 +293,7 @@ public class LibraryGUI extends JFrame {
 
     public static void main(String[] args) {
 
-//        SwingUtilities.invokeLater(() -> {
-            new LibraryGUI().setVisible(true);
+        new LibraryGUI().setVisible(true);
 
-//        });
     }
 }

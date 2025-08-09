@@ -17,17 +17,17 @@ package "GUI" {
 }
 
 package "Controller" {
-  [DataBaseController]<<Controller>>
+  [LibraryController] <<Controller>>
+}
+
+package "Singleton" {
+  [LibrarySingleton] <<Singleton>>
 }
 
 package "Model" {
   [Library]<<Model>>
   [Book]<<Model>>
   [SearchFilter]<<Model>>
-
-
-
-
 
 
 }
@@ -47,26 +47,34 @@ package "Singleton" {
   [LibrarySingleton]<<Utility>>
 }
 
+package "Utile" {
+  [JsonHandler]<<Database>>
+}
+
 ' Relazioni
+
+LibraryGUI --> LibraryController
+
 LibraryGUI --> AddBookDialog
 LibraryGUI --> UpdateBookDialog
 LibraryGUI --> SearchDialog
 LibraryGUI --> BookTableModel
 LibraryGUI --> LibrarySingleton
 
-LibrarySingleton --> DataBaseController
+LibrarySingleton --> JsonHandler
 LibrarySingleton --> Library
+Library --> Book
 
-AddBookCommand --> Library
-DeleteBookCommand --> Library
-UpdateBookCommand --> Library
+AddBookCommand --> LibrarySingleton
+DeleteBookCommand --> LibrarySingleton
+UpdateBookCommand --> LibrarySingleton
 
-LibraryGUI --> AddBookCommand
-LibraryGUI --> DeleteBookCommand
-LibraryGUI --> UpdateBookCommand
+LibraryController --> AddBookCommand
+LibraryController --> DeleteBookCommand
+LibraryController --> UpdateBookCommand
 
-LibraryGUI --> SearchStrategy
-LibraryGUI --> SortStrategy
+LibraryController --> SearchStrategy
+LibraryController --> SortStrategy
 
 BookTableModel --> Book
 

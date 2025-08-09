@@ -14,6 +14,9 @@ package "Singleton" {
         - LibrarySingleton()
         + {static} getInstance(): LibrarySingleton
         + getLibrary(): Library
+        + addBook(Book) : void
+        + removeBook(isbn: String)
+        + updateBook(Book) : void
         + loadBooksFromJson(File): void
         + saveBooksToJson(File): void
         + setSearchStrategy(SearchStrategy): void

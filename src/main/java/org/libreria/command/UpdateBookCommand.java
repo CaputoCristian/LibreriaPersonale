@@ -3,28 +3,29 @@ package org.libreria.command;
 import org.libreria.DTO.BookUpdateDTO;
 import org.libreria.model.Book;
 import org.libreria.model.Library;
+import org.libreria.singleton.LibrarySingleton;
 
 public class UpdateBookCommand implements CommandInterface {
-    private final Library library;
-    private final BookUpdateDTO dto;
+
+    private final Book updatedBook;
 
     private Book oldBookBackup;
     private Book bookToUpdate;
 
-    public UpdateBookCommand(Library library, BookUpdateDTO dto) {
-        this.library = library;
-        this.dto = dto;    }
+    public UpdateBookCommand(Book updatedBook) {
+        this.updatedBook = updatedBook;    }
 
     @Override
     public void execute() {
-        // Cerca il libro da aggiornare tramite ISBN (immutabile)
-        bookToUpdate = library.getBooks().stream()
-                .filter(b -> b.getIsbn().equals(dto.getIsbn()))
+
+        // Cerca il libro da aggiornare tramite ISBN (immutabile) per backup e per controllare che esista
+        bookToUpdate = LibrarySingleton.getInstance().getLibrary().getBooks().stream()
+                .filter(b -> b.getIsbn().equals(updatedBook.getIsbn()))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Book not found with ISBN: " + dto.getIsbn()));
+                .orElseThrow(() -> new IllegalArgumentException("Book not found with ISBN: " + updatedBook.getIsbn()));
 
         // Backup profondo (deep copy)
-        oldBookBackup = new Book(
+        bookToUpdate = new Book(
                 bookToUpdate.getTitle(),
                 bookToUpdate.getAuthor(),
                 bookToUpdate.getIsbn(),
@@ -33,7 +34,7 @@ public class UpdateBookCommand implements CommandInterface {
                 bookToUpdate.getReadingStatus()
         );
 
-        library.updateBook(dto.getIsbn(), dto);
+        LibrarySingleton.getInstance().updateBook(bookToUpdate.getIsbn(), bookToUpdate);
 
 //        // Applica i nuovi dati dal DTO
 //        bookToUpdate.setTitle(dto.getTitle());
@@ -47,7 +48,7 @@ public class UpdateBookCommand implements CommandInterface {
     @Override
     public void undo() {
         if (oldBookBackup != null) {
-            library.updateBook(oldBookBackup.getIsbn(), new BookUpdateDTO( oldBookBackup ) );
+            LibrarySingleton.getInstance().updateBook(oldBookBackup.getIsbn(), oldBookBackup);
         }
     }
 }

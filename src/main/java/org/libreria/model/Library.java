@@ -30,13 +30,13 @@ public class Library extends AbstractLibrary {
     }
 
     @Override
-    public boolean removeBook(String isbn) {
-        return books.removeIf(book -> book.getIsbn().equals(isbn));
+    public void removeBook(String isbn) {
+        books.removeIf(book -> book.getIsbn().equals(isbn));
     }
 
 
     @Override
-    public boolean updateBook(String isbn, BookUpdateDTO updateDTO) {
+    public void updateBook(String isbn, Book updatedBook) {
         Optional<Book> optionalBook = books.stream()
                 .filter(book -> book.getIsbn().equals(isbn))
                 .findFirst();
@@ -44,34 +44,40 @@ public class Library extends AbstractLibrary {
         if (optionalBook.isPresent()) {
             Book bookToUpdate = optionalBook.get();
 
-            if (updateDTO.isTitleModified()) {
-                bookToUpdate.setTitle(updateDTO.getTitle());
-            }
-
-//            if (updateDTO.isIsbnModified()) {
-//                bookToUpdate.setIsbn(updateDTO.getTitle());
+//            if (updateDTO.isTitleModified()) {
+//                bookToUpdate.setTitle(updateDTO.getTitle());
+//            }
+//
+////            if (updateDTO.isIsbnModified()) {
+////                bookToUpdate.setIsbn(updateDTO.getTitle());
+////            }
+//
+//            if (updateDTO.isAuthorModified()) {
+//                bookToUpdate.setAuthor(updateDTO.getAuthor());
+//            }
+//
+//            if (updateDTO.isGenreModified()) {
+//                bookToUpdate.setGenre(updateDTO.getGenre());
+//            }
+//
+//            if (updateDTO.isRatingModified()) {
+//                bookToUpdate.setRating(updateDTO.getRating());
+//            }
+//
+//            if (updateDTO.isReadingStatusModified()) {
+//                bookToUpdate.setReadingStatus(updateDTO.getReadingStatus());
 //            }
 
-            if (updateDTO.isAuthorModified()) {
-                bookToUpdate.setAuthor(updateDTO.getAuthor());
-            }
+            bookToUpdate.setTitle(updatedBook.getTitle());
+            bookToUpdate.setAuthor(updatedBook.getAuthor());
+            bookToUpdate.setIsbn(updatedBook.getIsbn());
+            bookToUpdate.setGenre(updatedBook.getGenre());
+            bookToUpdate.setRating(updatedBook.getRating());
+            bookToUpdate.setReadingStatus(updatedBook.getReadingStatus());
 
-            if (updateDTO.isGenreModified()) {
-                bookToUpdate.setGenre(updateDTO.getGenre());
-            }
 
-            if (updateDTO.isRatingModified()) {
-                bookToUpdate.setRating(updateDTO.getRating());
-            }
-
-            if (updateDTO.isReadingStatusModified()) {
-                bookToUpdate.setReadingStatus(updateDTO.getReadingStatus());
-            }
-
-            return true;
         }
 
-        return false; // Libro non trovato
     }
 
 //    @Override

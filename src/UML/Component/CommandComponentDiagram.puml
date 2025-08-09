@@ -14,28 +14,25 @@ package "Command" {
 
 
     class AddBookCommand {
-        - library: Library
         - book: Book
-        + AddBookCommand(library: Library, book: Book)
+        + AddBookCommand(book: Book)
         + execute(): void
         + undo(): void
     }
 
     class DeleteBookCommand {
-        - library: Library
         - isbn: String
         - deletedBook: Book
-        + DeleteBookCommand(library: Library, isbn: String)
+        + DeleteBookCommand(isbn: String)
         + execute(): void
         + undo(): void
     }
 
     class UpdateBookCommand {
-        - library: Library
         - isbn: String
         - oldBook: Book
-        - updateDTO: BookUpdateDTO
-        + UpdateBookCommand(library: Library, updateDTO: BookUpdateDTO)
+        - updatedBook: Book
+        + UpdateBookCommand(updatedBook: Book)
         + execute(): void
         + undo(): void
     }

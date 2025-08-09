@@ -12,8 +12,9 @@ public class Main {
 
 //        LibrarySingleton.getInstance().setSource(new File("database.json"));
 //        LibrarySingleton.getInstance().loadBooksFromJson();
-
-        new LibraryGUI();
+        File jsonFile = new File("database.json");
+        LibrarySingleton.getInstance().setSource(jsonFile);
+        new LibraryGUI().setVisible(true);
 
 
     }

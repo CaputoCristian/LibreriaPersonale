@@ -1,6 +1,7 @@
 package org.libreria.singleton;
 
 
+import org.libreria.DTO.BookUpdateDTO;
 import org.libreria.model.Book;
 import org.libreria.model.Library;
 import org.libreria.strategy.SearchStrategy.SearchStrategy;
@@ -44,6 +45,23 @@ public class LibrarySingleton {
             library.addBook(book);
         }
     }
+
+    public void addBook(Book book) {
+        library.addBook(book);
+    }
+
+    public Book getBookByIsbn(String isbn) {
+        return library.getBookByIsbn(isbn);
+    }
+
+    public void removeBook(String isbn) {
+        library.removeBook(isbn);
+    }
+
+    public void updateBook(String isbn, Book updatedBook) {
+        library.updateBook(isbn, updatedBook);
+    }
+
 
     public void saveBooksToJson() {
         JsonHandler.saveBooks(jsonFile, library.getBooks());

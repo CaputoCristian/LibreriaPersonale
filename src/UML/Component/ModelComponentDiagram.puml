@@ -54,25 +54,13 @@ package "Model" {
         + getMinRating()
     }
 
-    class BookUpdateDTO {
-        - title: String
-        - author: String
-        - isbn: String
-        - genre: String
-        - rating: int
-        - readingStatus: String
-        - modified flags: boolean
-        + getters()
-        + setters()
-        + isFieldModified()
-    }
+
 }
 
 ' Relazioni
 AbstractLibrary <|-- Library
 AbstractBook <|-- Book
 Library "1" *-- "0..*" Book : contiene
-BookUpdateDTO ..> Book : << converte >>
 SearchFilter ..> Book : << filtra >>
 AbstractLibrary o-- AbstractBook
 

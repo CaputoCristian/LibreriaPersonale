@@ -26,11 +26,7 @@ public abstract class AbstractLibrary {
     public abstract Book getBookByIsbn(String isbn);
 
     public abstract void addBook(Book book);
-    public abstract boolean removeBook(String isbn);
-    public abstract boolean updateBook(String isbn, BookUpdateDTO updateDTO);
+    public abstract void removeBook(String isbn);
+    public abstract void updateBook(String isbn, Book updatedBook);
 
-//    public abstract List<Book> searchByTitle(String title);
-//    public abstract List<Book> searchByAuthor(String author);
-//    public abstract void sortByTitle();
-//    public abstract void sortByRating();
 }

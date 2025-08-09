@@ -33,19 +33,19 @@ public class LibraryController {
     }
 
     public void addBook(Book newBook) {
-        CommandInterface command = new AddBookCommand(library, newBook);
+        CommandInterface command = new AddBookCommand(newBook);
         command.execute();
         save();
     }
 
-    public void updateBook(BookUpdateDTO dto) {
-        CommandInterface command = new UpdateBookCommand(library, dto);
+    public void updateBook(Book updatedBook) {
+        CommandInterface command = new UpdateBookCommand(updatedBook);
         command.execute();
         save();
     }
 
     public void deleteBook(String isbn) {
-        CommandInterface command = new DeleteBookCommand(library, isbn);
+        CommandInterface command = new DeleteBookCommand(isbn);
         command.execute();
         save();
     }
