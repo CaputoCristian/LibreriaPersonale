@@ -1,6 +1,5 @@
 package org.libreria.gui;
 
-import org.libreria.DTO.BookUpdateDTO;
 import org.libreria.model.Book;
 
 import javax.swing.table.AbstractTableModel;
@@ -49,17 +48,10 @@ public class BookTableModel extends AbstractTableModel {
         return books.get(rowIndex);
     }
 
-//    public void setBooks(List<Book> newBooks) {
-//        books.clear();
-//        books.addAll(newBooks);
-//        fireTableDataChanged();
-//    }
-
     public void setBooks(List<Book> newBooks) {
         this.books = new ArrayList<>(newBooks);  // Crea una nuova lista invece di usare clear() e addAll()
         fireTableDataChanged();
     }
-
 
     public void removeBookAt(int rowIndex) {
         books.remove(rowIndex);

@@ -1,7 +1,5 @@
 package org.libreria.singleton;
 
-
-import org.libreria.DTO.BookUpdateDTO;
 import org.libreria.model.Book;
 import org.libreria.model.Library;
 import org.libreria.strategy.SearchStrategy.SearchStrategy;
@@ -15,8 +13,6 @@ public class LibrarySingleton {
 
     private static LibrarySingleton instance;
     private Library library;
-    private SearchStrategy searchStrategy;
-    private SortStrategy sortStrategy;
     private File jsonFile;
 
     private LibrarySingleton() {
@@ -41,9 +37,6 @@ public class LibrarySingleton {
 
     public void loadBooksFromJson() {
         List<Book> books = JsonHandler.loadBooks(jsonFile);
-//        for (Book book : books) {
-//            library.addBook(book);
-//        }
         library = new Library(books);
 
     }
@@ -64,27 +57,8 @@ public class LibrarySingleton {
         library.updateBook(isbn, updatedBook);
     }
 
-
     public void saveBooksToJson() {
         JsonHandler.saveBooks(jsonFile, library.getBooks());
-    }
-
-    public void setSearchStrategy(SearchStrategy searchStrategy) {
-        this.searchStrategy = searchStrategy;
-    }
-
-    public void setSortStrategy(SortStrategy sortStrategy) {
-        this.sortStrategy = sortStrategy;
-    }
-
-    public List<Book> search(List<Book> books, String keyword) {
-        if (searchStrategy == null) throw new IllegalStateException("Search strategy not set");
-        return searchStrategy.search(books, keyword);
-    }
-
-    public List<Book> sort(List<Book> books) {
-        if (sortStrategy == null) throw new IllegalStateException("Sort strategy not set");
-        return sortStrategy.sort(books);
     }
 
 }

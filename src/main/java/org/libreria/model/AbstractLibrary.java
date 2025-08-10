@@ -1,7 +1,5 @@
 package org.libreria.model;
 
-import org.libreria.DTO.BookUpdateDTO;
-
 import java.util.List;
 
 public abstract class AbstractLibrary {

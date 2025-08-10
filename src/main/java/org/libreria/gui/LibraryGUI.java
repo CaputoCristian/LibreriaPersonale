@@ -1,18 +1,9 @@
 package org.libreria.gui;
 
-import org.libreria.DTO.BookUpdateDTO;
-import org.libreria.command.AddBookCommand;
-import org.libreria.command.CommandInterface;
-import org.libreria.command.DeleteBookCommand;
-import org.libreria.command.UpdateBookCommand;
+
 import org.libreria.model.Book;
 import org.libreria.model.SearchFilter;
 import org.libreria.singleton.LibrarySingleton;
-import org.libreria.strategy.SearchStrategy.AuthorSearchStrategy;
-import org.libreria.strategy.SearchStrategy.FilteredSearchStrategy;
-import org.libreria.strategy.SearchStrategy.SearchStrategy;
-import org.libreria.strategy.SearchStrategy.TitleSearchStrategy;
-import org.libreria.strategy.SortStrategy.InsertionOrderSortStrategy;
 import org.libreria.strategy.SortStrategy.SortStrategy;
 import org.libreria.strategy.SortStrategy.SortStrategyManager;
 import org.libreria.template.AddBookDialog;
@@ -29,15 +20,12 @@ import java.util.List;
 public class LibraryGUI extends JFrame {
 
     private JTable bookTable;
-//    private DefaultTableModel tableModel;
     private BookTableModel tableModel;
     private JButton addButton, editButton, deleteButton, searchButton, sortButton, refreshButton;
 
     private LibraryController libraryController;
-    private File jsonFile;
 
     private final SortStrategyManager sortManager = new SortStrategyManager(); //Necessario qua e non nel controller, per nome sul tasto
-    private SortMode currentSortMode = SortMode.BY_INSERTION;       //default
 
     public LibraryGUI() {
         setTitle("Gestione Libreria Personale");
@@ -45,15 +33,11 @@ public class LibraryGUI extends JFrame {
         setSize(800, 600);
         setLocationRelativeTo(null);
 
-//        jsonFile = new File("database.json");
-//        LibrarySingleton.getInstance().setSource(jsonFile);
         libraryController = new LibraryController();
-        System.out.println("Libri caricati: " + LibrarySingleton.getInstance().getLibrary().getBooks().size());
 
         bookTable = new JTable(); // inizializzazione base
         bookTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-//        tableModel = new DefaultTableModel(new Object[]{"Titolo", "Autore", "ISBN", "Genere", "Valutazione", "Stato"}, 0);
         tableModel = new BookTableModel(LibrarySingleton.getInstance().getLibrary().getBooks());
         bookTable.setModel(tableModel);
         JScrollPane scrollPane = new JScrollPane(bookTable);
@@ -86,10 +70,8 @@ public class LibraryGUI extends JFrame {
 
             BookTableModel model = new BookTableModel(sorted);
             bookTable.setModel(model);
-
         });
 
-        // Aggiunta libro
         addButton.addActionListener(e -> {
             AddBookDialog dialog = new AddBookDialog(this);
             Book newBook = dialog.showDialog();
@@ -98,12 +80,10 @@ public class LibraryGUI extends JFrame {
                 libraryController.addBook(newBook);
                 loadBooks(); //Aumenta la complessità temporale, spesso è superfluo rileggere da file, ma se così si è sicuri dell'aggiunta: si evita di aggiungere alla lista libri
                              //che per qualsiasi motivo non sono stati salvati (e non hanno sollevato errori)
-
             }
             loadBooks();
         });
 
-        // Modifica libro
         editButton.addActionListener(e -> {
             int selectedRow = bookTable.getSelectedRow();
             if (selectedRow >= 0) {
@@ -134,13 +114,7 @@ public class LibraryGUI extends JFrame {
                 if (confirm == JOptionPane.YES_OPTION) {
                     try {
 
-
                         libraryController.deleteBook(selectedBook.getIsbn());
-
-                        // Aggiungi un log per debug
-                        System.out.println("Libro eliminato: " + selectedBook.getTitle());
-                        System.out.println("Libri rimanenti: " +
-                                LibrarySingleton.getInstance().getLibrary().getBooks().size());
 
                     } catch (Exception ex) {
                         JOptionPane.showMessageDialog(this,
@@ -168,37 +142,27 @@ public class LibraryGUI extends JFrame {
 
             BookTableModel model = new BookTableModel(sorted);
             bookTable.setModel(model);
-
         });
 
         searchButton.addActionListener(e -> {
             SearchDialog dialog = new SearchDialog(this);
             SearchFilter filter = dialog.showDialog();
 
-
                 List<Book> results = libraryController.searchBooks(filter);
 
                 tableModel.setBooks(results);
-             //}
         });
-
         loadBooks();
     }
-
-
 
     private void loadBooks() {
         LibrarySingleton.getInstance().loadBooksFromJson();
         List<Book> books = LibrarySingleton.getInstance().getLibrary().getBooks();
         tableModel.setBooks(books);
 
-        System.out.println("Aggiornamento tabella con " + books.size() + " libri");
-
     }
 
     public static void main(String[] args) {
-
         new LibraryGUI().setVisible(true);
-
     }
 }

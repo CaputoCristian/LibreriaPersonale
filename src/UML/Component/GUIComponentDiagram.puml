@@ -1,7 +1,7 @@
 @startuml GUI and Template Component Diagram
 
 skinparam class {
-    BackgroundColor<<GUI>> LightBlue
+    BackgroundColor <<GUI>> LightBlue
     BackgroundColor<<Template>> LightGreen
 }
 
@@ -10,8 +10,8 @@ package "GUI" {
         - bookTable: JTable
         - tableModel: BookTableModel
         - buttons: JButton[]
+        - libraryController: LibraryController
         - sortManager: SortStrategyManager
-        - currentSortMode: SortMode
         + LibraryGUI()
         - loadBooks(): void
     }
@@ -25,14 +25,16 @@ package "GUI" {
         + getColumnName(col: int): String
         + getBookAt(row: int): Book
         + setBooks(books: List<Book>): void
-        + removeBookAt(row: int): void
     }
 
     class SearchDialog <<GUI>> {
         - searchField: JTextField
-        - searchTypeCombo: JComboBox
+        - titleRadio: JRadioButton
+        - authorRadio: JRadioButton
         - statusCombo: JComboBox
-        - ratingSpinner: JSpinner
+        - ratingCombo: JComboBox
+        - searchButton: JButton
+        - cancelButton: JButton
         + SearchDialog(parent: Frame)
         + showDialog(): SearchFilter
     }
@@ -40,35 +42,29 @@ package "GUI" {
 
 package "Template" {
     abstract class BookDialogTemplate <<Template>> {
-        # parent: Frame
         # titleField: JTextField
         # authorField: JTextField
         # isbnField: JTextField
         # genreField: JTextField
-        # ratingSpinner: JSpinner
+        # ratingField: JTextField
         # statusCombo: JComboBox
-        + {abstract} createFields(): void
-        + {abstract} validateInput(): boolean
-        + {abstract} processResult(): Object
-        # createDialog(): void
-        # initializeComponents(): void
-        + showDialog(): Object
+        + BookDialogTemplate(parent: JFrame, title: String)
+        # validateFields(): boolean
+        # {abstract} onConfirm(): void
     }
 
     class AddBookDialog <<Template>> {
-        + AddBookDialog(parent: Frame)
-        + createFields(): void
-        + validateInput(): boolean
-        + processResult(): Book
+        - newBook: Book
+        + AddBookDialog(parent: JFrame)
+        + onConfirm(): void
+        + showDialog(): Book
     }
 
     class UpdateBookDialog <<Template>> {
-        - originalBook: Book
-        - modifiedFields: Set<String>
+        - updatedBook: Book
         + UpdateBookDialog(parent: Frame, book: Book)
-        + createFields(): void
-        + validateInput(): boolean
-        + processResult(): BookUpdateDTO
+        + onConfirm(): void
+        + showDialog(): Book
     }
 }
 

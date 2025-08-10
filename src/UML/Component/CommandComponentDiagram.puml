@@ -7,15 +7,15 @@ skinparam class {
 }
 
 package "Command" {
-    interface CommandInterface {
-            + {abstract} execute(): void
-            + {abstract} undo(): void
+    interface CommandInterface <<Interface>> {
+            + execute(): void
+            + undo(): void
         }
 
 
     class AddBookCommand {
         - book: Book
-        + AddBookCommand(book: Book)
+        + AddBookCommand(book: Book): void
         + execute(): void
         + undo(): void
     }
@@ -23,7 +23,7 @@ package "Command" {
     class DeleteBookCommand {
         - isbn: String
         - deletedBook: Book
-        + DeleteBookCommand(isbn: String)
+        + DeleteBookCommand(isbn: String): void
         + execute(): void
         + undo(): void
     }
@@ -32,7 +32,7 @@ package "Command" {
         - isbn: String
         - oldBook: Book
         - updatedBook: Book
-        + UpdateBookCommand(updatedBook: Book)
+        + UpdateBookCommand(updatedBook: Book): void
         + execute(): void
         + undo(): void
     }

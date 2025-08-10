@@ -7,7 +7,7 @@ import javax.swing.*;
 
 public class AddBookDialog extends BookDialogTemplate {
 
-    private Book bookResult;
+    private Book newBook;
 
     public AddBookDialog(JFrame parent) {
         super(parent, "Aggiungi Libro");
@@ -15,7 +15,7 @@ public class AddBookDialog extends BookDialogTemplate {
 
     @Override
     protected void onConfirm() {
-        if (!validateCommonFields()) return;
+        if (!validateFields()) return;
 
         String isbn = isbnField.getText().trim();
         boolean exists = LibrarySingleton.getInstance()
@@ -30,21 +30,14 @@ public class AddBookDialog extends BookDialogTemplate {
         }
 
         try {
-//            bookResult = BookFactory.create(
-//                    titleField.getText().trim(),
-//                    authorField.getText().trim(),
-//                    isbn,
-//                    genreField.getText().trim(),
-//                    Integer.parseInt(ratingField.getText().trim()),
-//                    readingStatusField.getText().trim()
 
-            bookResult = new Book();
-            bookResult.setTitle(titleField.getText().trim());
-            bookResult.setAuthor(authorField.getText().trim());
-            bookResult.setIsbn(isbn);                           //già definito sopra per controllo
-            bookResult.setGenre(genreField.getText().trim());
-            bookResult.setRating(Integer.parseInt(ratingField.getText().trim()));
-            bookResult.setReadingStatus(readingStatusField.getSelectedItem().toString());
+            newBook = new Book();
+            newBook.setTitle(titleField.getText().trim());
+            newBook.setAuthor(authorField.getText().trim());
+            newBook.setIsbn(isbn);                           //già definito sopra per controllo
+            newBook.setGenre(genreField.getText().trim());
+            newBook.setRating(Integer.parseInt(ratingField.getText().trim()));
+            newBook.setReadingStatus(statusCombo.getSelectedItem().toString());
 
             dispose();
         } catch (IllegalArgumentException ex) {
@@ -54,6 +47,6 @@ public class AddBookDialog extends BookDialogTemplate {
 
     public Book showDialog() {
         setVisible(true);
-        return bookResult;
+        return newBook;
     }
 }

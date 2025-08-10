@@ -5,7 +5,7 @@ import java.awt.*;
 
 public abstract class BookDialogTemplate extends JDialog {
     protected JTextField titleField, authorField, isbnField, genreField, ratingField;
-    protected JComboBox readingStatusField;
+    protected JComboBox statusCombo;
     protected JButton confirmButton, cancelButton;
     protected String[] stati = {"", "Letto", "In lettura", "Da leggere"}; // Stato di lettura
 
@@ -25,7 +25,7 @@ public abstract class BookDialogTemplate extends JDialog {
         inputPanel.add(new JLabel("ISBN:")); isbnField = new JTextField(); inputPanel.add(isbnField);
         inputPanel.add(new JLabel("Genere:")); genreField = new JTextField(); inputPanel.add(genreField);
         inputPanel.add(new JLabel("Rating (0-5):")); ratingField = new JTextField(); inputPanel.add(ratingField);
-        inputPanel.add(new JLabel("Stato:")); readingStatusField = new JComboBox<>(stati); inputPanel.add(readingStatusField);
+        inputPanel.add(new JLabel("Stato:")); statusCombo = new JComboBox<>(stati); inputPanel.add(statusCombo);
 
         add(inputPanel, BorderLayout.CENTER);
 
@@ -39,12 +39,12 @@ public abstract class BookDialogTemplate extends JDialog {
         cancelButton.addActionListener(e -> dispose());
     }
 
-    protected boolean validateCommonFields() {
+    protected boolean validateFields() {
 
         // Campo vuoto
         if (titleField.getText().isEmpty() || authorField.getText().isEmpty() || isbnField.getText().isEmpty()
                 || genreField.getText().isEmpty() || ratingField.getText().isEmpty()
-                || readingStatusField.getSelectedItem().equals("")) {
+                || statusCombo.getSelectedItem().equals("")) {
             JOptionPane.showMessageDialog(this, "Tutti i campi sono obbligatori.");
             return false;
         }
@@ -68,6 +68,5 @@ public abstract class BookDialogTemplate extends JDialog {
         return true;
     }
 
-        // Metodo da definire nelle sottoclassi
     protected abstract void onConfirm();
 }

@@ -12,7 +12,7 @@ package "Model" {
         # author: String
         # isbn: String
         # genre: String
-        # rating: int
+        # rating: Integer
         # readingStatus: String
         + getters()
         + setters()
@@ -22,8 +22,8 @@ package "Model" {
         # books: List<Book>
         + {abstract} getBookByIsbn(String): Book
         + {abstract} addBook(Book)
-        + {abstract} removeBook(String): boolean
-        + {abstract} updateBook(String, BookUpdateDTO): boolean
+        + {abstract} removeBook(String)
+        + {abstract} updateBook(String, Book)
         + getBooks(): List<Book>
         + setBooks(List<Book>)
     }
@@ -39,8 +39,8 @@ package "Model" {
         + Library(List<Book>)
         + getBookByIsbn(String): Book
         + addBook(Book)
-        + removeBook(String): boolean
-        + updateBook(String, BookUpdateDTO): boolean
+        + removeBook(String)
+        + updateBook(String, Book)
     }
 
     class SearchFilter {
@@ -48,13 +48,12 @@ package "Model" {
         - searchByTitle: boolean
         - readingStatusFilter: String
         - minRating: Integer
+        + SearchFilter(searchTerm: String, readingStatusFilter: String, minRating: Integer)
         + getSearchTerm()
         + isSearchByTitle()
         + getReadingStatusFilter()
         + getMinRating()
     }
-
-
 }
 
 ' Relazioni

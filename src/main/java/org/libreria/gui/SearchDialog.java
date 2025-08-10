@@ -18,7 +18,7 @@ public class SearchDialog extends JDialog {
     private SearchFilter result;
 
     public SearchDialog(JFrame parent) {
-        super(parent, "Ricerca Avanzata", true);
+        super(parent, "Ricerca testo", true);
         setSize(400, 300);
         setLocationRelativeTo(parent);
         setLayout(new BorderLayout());

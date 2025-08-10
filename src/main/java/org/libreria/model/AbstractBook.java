@@ -5,7 +5,7 @@ public abstract class AbstractBook {
     protected String author;
     protected String isbn;
     protected String genre;
-    protected Integer rating; // 1-5
+    protected Integer rating; // 0-5
     protected String readingStatus; // "letto", "in lettura", "da leggere"
 
     public AbstractBook() {
@@ -41,13 +41,6 @@ public abstract class AbstractBook {
         return isbn;
     }
 
-//    public void setIsbn(String isbn) {
-//        if (isbn == null || !isbn.matches("^(\\d{10}|\\d{13}|(\\d{1,5}-\\d{1,7}-\\d{1,7}-[\\dX]))$")) {
-//            throw new IllegalArgumentException("ISBN non valido. Deve contenere 10 o 13 cifre, con al più un trattino.");
-//        }
-//        this.isbn = isbn;
-//    }
-
     public void setIsbn(String isbn) {
         if (isbn == null) {
             throw new IllegalArgumentException("ISBN non può essere null.");
@@ -63,7 +56,6 @@ public abstract class AbstractBook {
 
         this.isbn = isbn;
     }
-
 
     public String getGenre() {
         return genre;

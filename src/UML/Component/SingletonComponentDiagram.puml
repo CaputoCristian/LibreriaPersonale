@@ -9,20 +9,16 @@ package "Singleton" {
     class LibrarySingleton <<Singleton>> {
         - {static} instance: LibrarySingleton
         - library: Library
-        - searchStrategy: SearchStrategy
-        - sortStrategy: SortStrategy
+        - jsonFile: File
         - LibrarySingleton()
         + {static} getInstance(): LibrarySingleton
         + getLibrary(): Library
-        + addBook(Book) : void
-        + removeBook(isbn: String)
-        + updateBook(Book) : void
+        + setSource(jsonFile: File): void
+        + addBook(Book): void
+        + removeBook(isbn: String): void
+        + updateBook(Book): void
         + loadBooksFromJson(File): void
         + saveBooksToJson(File): void
-        + setSearchStrategy(SearchStrategy): void
-        + setSortStrategy(SortStrategy): void
-        + search(List<Book>, String): List<Book>
-        + sort(List<Book>): List<Book>
     }
 }
 
