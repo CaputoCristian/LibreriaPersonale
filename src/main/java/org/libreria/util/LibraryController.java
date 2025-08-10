@@ -74,10 +74,12 @@ public class LibraryController {
                     filter.getMinRating()
             );
 
-            LibrarySingleton.getInstance().setSearchStrategy(fullStrategy);
+//            LibrarySingleton.getInstance().setSearchStrategy(fullStrategy);
 
-            return LibrarySingleton.getInstance().search(library.getBooks(), filter.getSearchTerm());
+//            return LibrarySingleton.getInstance().search(library.getBooks(), filter.getSearchTerm());
+            return fullStrategy.search(LibrarySingleton.getInstance().getLibrary().getBooks(), filter.getSearchTerm());
         }
+
         return null;
     }
 

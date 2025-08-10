@@ -4,8 +4,11 @@ import javax.swing.*;
 import java.awt.*;
 
 public abstract class BookDialogTemplate extends JDialog {
-    protected JTextField titleField, authorField, isbnField, genreField, ratingField, readingStatusField;
+    protected JTextField titleField, authorField, isbnField, genreField, ratingField;
+    protected JComboBox readingStatusField;
     protected JButton confirmButton, cancelButton;
+    protected String[] stati = {"", "Letto", "In lettura", "Da leggere"}; // Stato di lettura
+
 
     public BookDialogTemplate(JFrame parent, String title) {
         super(parent, true);
@@ -22,7 +25,7 @@ public abstract class BookDialogTemplate extends JDialog {
         inputPanel.add(new JLabel("ISBN:")); isbnField = new JTextField(); inputPanel.add(isbnField);
         inputPanel.add(new JLabel("Genere:")); genreField = new JTextField(); inputPanel.add(genreField);
         inputPanel.add(new JLabel("Rating (0-5):")); ratingField = new JTextField(); inputPanel.add(ratingField);
-        inputPanel.add(new JLabel("Stato:")); readingStatusField = new JTextField(); inputPanel.add(readingStatusField);
+        inputPanel.add(new JLabel("Stato:")); readingStatusField = new JComboBox<>(stati); inputPanel.add(readingStatusField);
 
         add(inputPanel, BorderLayout.CENTER);
 
@@ -37,10 +40,11 @@ public abstract class BookDialogTemplate extends JDialog {
     }
 
     protected boolean validateCommonFields() {
-        // Campo vuoto?
+
+        // Campo vuoto
         if (titleField.getText().isEmpty() || authorField.getText().isEmpty() || isbnField.getText().isEmpty()
                 || genreField.getText().isEmpty() || ratingField.getText().isEmpty()
-                || readingStatusField.getText().isEmpty()) {
+                || readingStatusField.getSelectedItem().equals("")) {
             JOptionPane.showMessageDialog(this, "Tutti i campi sono obbligatori.");
             return false;
         }
@@ -54,17 +58,16 @@ public abstract class BookDialogTemplate extends JDialog {
         }
 
         // Rating valido
-        try {
             int rating = Integer.parseInt(ratingField.getText().trim());
-            if (rating < 0 || rating > 5) throw new NumberFormatException();
-        } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(this, "Il rating deve essere un numero intero tra 0 e 5.");
+            if (rating < 0 || rating > 5) {
+            JOptionPane.showMessageDialog(this, "Il rating deve essere un numero intero tra 0 e 5.",
+                    "Rating non valido", JOptionPane.ERROR_MESSAGE);
             return false;
         }
 
         return true;
     }
 
-    // Metodo da definire nelle sottoclassi
+        // Metodo da definire nelle sottoclassi
     protected abstract void onConfirm();
 }

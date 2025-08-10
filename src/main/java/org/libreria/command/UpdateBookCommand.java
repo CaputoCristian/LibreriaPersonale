@@ -34,14 +34,8 @@ public class UpdateBookCommand implements CommandInterface {
                 bookToUpdate.getReadingStatus()
         );
 
-        LibrarySingleton.getInstance().updateBook(bookToUpdate.getIsbn(), bookToUpdate);
+        LibrarySingleton.getInstance().updateBook(bookToUpdate.getIsbn(), updatedBook);
 
-//        // Applica i nuovi dati dal DTO
-//        bookToUpdate.setTitle(dto.getTitle());
-//        bookToUpdate.setAuthor(dto.getAuthor());
-//        bookToUpdate.setGenre(dto.getGenre());
-//        bookToUpdate.setRating(dto.getRating());
-//        bookToUpdate.setReadingStatus(dto.getReadingStatus());
 
     }
 

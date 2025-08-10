@@ -72,8 +72,9 @@ public class SearchDialog extends JDialog {
             Integer minRating = (Integer) ratingCombo.getSelectedItem();
 
             if (term.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Inserisci un termine di ricerca");
-                return;
+//                JOptionPane.showMessageDialog(this, "Inserisci un termine di ricerca");
+//                return;
+                term = ""; //Permette la ricerca solo per filtro, senza autore o titolo
             }
 
             if (stato != null && stato.isBlank()) stato = null;

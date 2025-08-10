@@ -4,7 +4,7 @@ import java.util.List;
 
 public class SortStrategyManager {
     private final List<SortStrategy> strategies;
-    private int currentIndex = -1;
+    private int currentIndex = 0;
 
     public SortStrategyManager() {
         strategies = List.of(
@@ -15,13 +15,24 @@ public class SortStrategyManager {
     }
 
     public SortStrategy nextStrategy() {
+
+//        System.out.println("SetStrategy AUTOMATICO da: " + strategies.get(currentIndex).getName() + ", a: " + strategies.get((currentIndex + 1) % strategies.size()).getName());
+
         currentIndex = (currentIndex + 1) % strategies.size();
         return getCurrentStrategy();
     }
 
     public SortStrategy getCurrentStrategy() {
-        if (currentIndex == -1 || currentIndex == strategies.size()) return null; //se null si usa l'ordinamento di default
+
+//        System.out.println("getStrategy: " + strategies.get(currentIndex).getName());
+
         return strategies.get(currentIndex);
     }
 
+    public void setCurrentStrategy(int strategyIndex) {
+
+//        System.out.println("SetStrategy MANUALE da: " + strategies.get(currentIndex).getName() + ", a: " + strategies.get(strategyIndex).getName());
+
+        this.currentIndex = strategyIndex;
+    }
 }

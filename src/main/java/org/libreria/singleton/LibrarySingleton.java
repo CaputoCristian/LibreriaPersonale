@@ -41,9 +41,11 @@ public class LibrarySingleton {
 
     public void loadBooksFromJson() {
         List<Book> books = JsonHandler.loadBooks(jsonFile);
-        for (Book book : books) {
-            library.addBook(book);
-        }
+//        for (Book book : books) {
+//            library.addBook(book);
+//        }
+        library = new Library(books);
+
     }
 
     public void addBook(Book book) {

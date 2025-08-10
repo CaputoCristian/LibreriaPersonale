@@ -12,7 +12,6 @@ public class SearchFilter {
         this.readingStatusFilter = readingStatusFilter;
         this.minRating = minRating;
     }
-
     public String getSearchTerm() {
         return searchTerm;
     }

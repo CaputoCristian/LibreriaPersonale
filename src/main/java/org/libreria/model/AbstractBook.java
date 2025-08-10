@@ -78,8 +78,8 @@ public abstract class AbstractBook {
     }
 
     public void setRating(int rating) {
-        if (rating < 1 || rating > 5) {
-            throw new IllegalArgumentException("La valutazione deve essere contenuta tra 1 e 5.");
+        if (rating < 0 || rating > 5) {
+            throw new IllegalArgumentException("La valutazione deve essere contenuta tra 0 e 5.");
         }
         this.rating = rating;
     }

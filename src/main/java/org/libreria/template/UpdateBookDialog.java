@@ -7,7 +7,6 @@ import javax.swing.*;
 
 public class UpdateBookDialog extends BookDialogTemplate {
 
-    private BookUpdateDTO bookDTO;
     private Book updatedBook;
 
     public UpdateBookDialog(JFrame parent, Book bookToEdit) {
@@ -19,7 +18,7 @@ public class UpdateBookDialog extends BookDialogTemplate {
         isbnField.setText(bookToEdit.getIsbn());
         genreField.setText(bookToEdit.getGenre());
         ratingField.setText(String.valueOf(bookToEdit.getRating()));
-        readingStatusField.setText(bookToEdit.getReadingStatus());
+        readingStatusField.setSelectedItem(bookToEdit.getReadingStatus());
 
         isbnField.setEnabled(false); // non modificabile
     }
@@ -43,9 +42,10 @@ public class UpdateBookDialog extends BookDialogTemplate {
                 isbnField.getText().trim(),
                 genreField.getText().trim(),
                 Integer.parseInt(ratingField.getText().trim()),
-                readingStatusField.getText().trim()
+                readingStatusField.getSelectedItem().toString()
                 );
 
+        System.out.println("Modificato: " + updatedBook.toString());
         dispose();
     }
 

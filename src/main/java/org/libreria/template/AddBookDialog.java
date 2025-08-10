@@ -44,7 +44,7 @@ public class AddBookDialog extends BookDialogTemplate {
             bookResult.setIsbn(isbn);                           //già definito sopra per controllo
             bookResult.setGenre(genreField.getText().trim());
             bookResult.setRating(Integer.parseInt(ratingField.getText().trim()));
-            bookResult.setReadingStatus(readingStatusField.getText().trim());
+            bookResult.setReadingStatus(readingStatusField.getSelectedItem().toString());
 
             dispose();
         } catch (IllegalArgumentException ex) {
