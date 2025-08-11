@@ -53,7 +53,7 @@
     "author" : "Prova",
     "isbn" : "0123456789",
     "genre" : "No",
-    "rating" : 0,
-    "readingStatus" : "In lettura"
+    "rating" : 1,
+    "readingStatus" : "Letto"
   } ]
 }
