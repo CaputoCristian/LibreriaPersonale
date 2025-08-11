@@ -9,12 +9,10 @@ import org.libreria.strategy.SortStrategy.SortStrategyManager;
 import org.libreria.template.AddBookDialog;
 import org.libreria.template.UpdateBookDialog;
 import org.libreria.util.LibraryController;
-import org.libreria.util.SortMode;
 
 import javax.swing.*;
 import java.awt.*;
 
-import java.io.File;
 import java.util.List;
 
 public class LibraryGUI extends JFrame {

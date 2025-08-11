@@ -1,6 +1,5 @@
 package org.libreria.util;
 
-import org.libreria.DTO.BookUpdateDTO;
 import org.libreria.command.AddBookCommand;
 import org.libreria.command.CommandInterface;
 import org.libreria.command.DeleteBookCommand;
@@ -14,23 +13,21 @@ import org.libreria.strategy.SearchStrategy.FilteredSearchStrategy;
 import org.libreria.strategy.SearchStrategy.SearchStrategy;
 import org.libreria.strategy.SearchStrategy.TitleSearchStrategy;
 import org.libreria.strategy.SortStrategy.SortStrategy;
-import org.libreria.strategy.SortStrategy.SortStrategyManager;
 
-import java.io.File;
 import java.util.List;
 
 public class LibraryController {
 
-    private final Library library;
+//    private final Library library;
 
     public LibraryController() {
         LibrarySingleton.getInstance().loadBooksFromJson();
-        this.library = LibrarySingleton.getInstance().getLibrary();
+//        this.library = LibrarySingleton.getInstance().getLibrary();
     }
 
-    public List<Book> getAllBooks() {
-        return library.getBooks();
-    }
+//    public List<Book> getAllBooks() {
+//        return library.getBooks();
+//    }
 
     public void addBook(Book newBook) {
         CommandInterface command = new AddBookCommand(newBook);
@@ -84,7 +81,8 @@ public class LibraryController {
     }
 
     public List<Book> sortBooks(SortStrategy strategy) {
-        return strategy.sort(library.getBooks());
+//        return strategy.sort(library.getBooks());
+        return strategy.sort(LibrarySingleton.getInstance().getLibrary().getBooks());
     }
 
     private void save() {

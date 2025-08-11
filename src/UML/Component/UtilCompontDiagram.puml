@@ -7,29 +7,23 @@ skinparam class {
 }
 
 package "util" {
-    enum SortMode {
-        BY_TITLE
-        BY_AUTHOR
-        BY_RATING
-        BY_INSERTION
-        + next(): SortMode
-        + getSortStrategy(): SortStrategy
-    }
 
     class JsonHandler {
+        - {static} mapper: ObjectMapper
         + {static} loadBooks(File): List<Book>
         + {static} saveBooks(File, List<Book>): void
     }
-}
 
-package "Strategy.Sort" {
-    class SortStrategy {
+    class LibraryController {
+    + LibraryController()
+    + getAllBooks(): List<Book>
+    + addBook(newBook: Book): void
+    + updateBook(updatedBook: Book): void
+    + removeBook(isbn: String): void
+    + searchBooks(filter: SearchFilter): List<Book>
+    + sortBooks(strategy: SortStrategy): List<Book>
+    + save(): void
     }
-
 }
-
-
-' Relazioni
-SortMode ..>  SortStrategy : creates
 
 @enduml

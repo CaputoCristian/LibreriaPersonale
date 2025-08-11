@@ -1,8 +1,6 @@
 package org.libreria.command;
 
-import org.libreria.DTO.BookUpdateDTO;
 import org.libreria.model.Book;
-import org.libreria.model.Library;
 import org.libreria.singleton.LibrarySingleton;
 
 public class UpdateBookCommand implements CommandInterface {

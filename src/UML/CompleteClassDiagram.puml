@@ -1,0 +1,188 @@
+@startuml Complete Class Diagram
+
+skinparam package {
+    BackgroundColor White
+    BorderColor Black
+}
+
+skinparam class {
+    BackgroundColor<<GUI>> #FFEBCC
+    BorderColor<<GUI>> #E67E22
+
+    BackgroundColor<<Template>> #E6F7FF
+    BorderColor<<Template>> #3498DB
+
+    BackgroundColor<<Singleton>> #FFF2CC
+    BorderColor<<Singleton>> #F1C40F
+
+    BackgroundColor<<Interface>> #E8F5E9
+    BorderColor<<Interface>> #2ECC71
+
+    BackgroundColor<<Controller>> #CCE5FF
+    BorderColor<<Controller>> #3399FF
+
+    BackgroundColor<<Model>> #FFD6CC
+    BorderColor<<Model>> #FF6633
+
+    BackgroundColor<<Util>> #F8D7DA
+    BorderColor<<Util>> #DC3545
+
+    BackgroundColor<<Strategy>> #E0CCFF
+    BorderColor<<Strategy>> #7A33FF
+}
+
+top to bottom direction
+
+interface CommandInterface <<Interface>> {
+    + execute(): void
+    + undo(): void
+}
+
+class LibraryGUI <<GUI>> {
+    - bookTable: JTable
+    - tableModel: BookTableModel
+    - buttons: JButton[]
+    - libraryController: LibraryController
+    - sortManager: SortStrategyManager
+    + LibraryGUI()
+    - loadBooks(): void
+}
+
+class BookTableModel <<GUI>> {
+    - columnNames: String[]
+    - books: List<Book>
+    + getRowCount(): int
+    + getColumnCount(): int
+    + getValueAt(row: int, col: int): Object
+    + getColumnName(col: int): String
+    + getBookAt(row: int): Book
+    + setBooks(books: List<Book>): void
+}
+
+class SearchDialog <<GUI>> {
+    - searchField: JTextField
+    - titleRadio: JRadioButton
+    - authorRadio: JRadioButton
+    - statusCombo: JComboBox
+    - ratingCombo: JComboBox
+    - searchButton: JButton
+    - cancelButton: JButton
+    + SearchDialog(parent: Frame)
+    + showDialog(): SearchFilter
+}
+
+abstract class BookDialogTemplate <<Template>> {
+    # titleField: JTextField
+    # authorField: JTextField
+    # isbnField: JTextField
+    # genreField: JTextField
+    # ratingField: JTextField
+    # statusCombo: JComboBox
+    + BookDialogTemplate(parent: JFrame, title: String)
+    # validateFields(): boolean
+    # {abstract} onConfirm(): void
+}
+
+interface SearchStrategy <<Interface>> {
+    + search(books: List<Book>, keyword: String): List<Book>
+}
+
+interface SortStrategy <<Interface>> {
+    + sort(books: List<Book>): List<Book>
+    + getName(): String
+}
+
+class SortStrategyManager <<Strategy>> {
+    - strategies: List<SortStrategy>
+    - currentIndex: int
+    + SortStrategyManager()
+    + nextStrategy(): SortStrategy
+    + getCurrentStrategy(): SortStrategy
+    + setCurrentStrategy(strategyIndex: int): void
+}
+
+class JsonHandler <<Util>> {
+    - {static} mapper: ObjectMapper
+    + {static} loadBooks(File): List<Book>
+    + {static} saveBooks(File, List<Book>): void
+}
+
+class LibraryController <<Controller>> {
+    + LibraryController()
+    + getAllBooks(): List<Book>
+    + addBook(newBook: Book): void
+    + updateBook(updatedBook: Book): void
+    + removeBook(isbn: String): void
+    + searchBooks(filter: SearchFilter): List<Book>
+    + sortBooks(strategy: SortStrategy): List<Book>
+    + save(): void
+}
+
+class LibrarySingleton <<Singleton>> {
+    - {static} instance: LibrarySingleton
+    - library: Library
+    - jsonFile: File
+    - LibrarySingleton()
+    + {static} getInstance(): LibrarySingleton
+    + getLibrary(): Library
+    + setSource(jsonFile: File): void
+    + addBook(Book): void
+    + removeBook(isbn: String): void
+    + updateBook(Book): void
+    + loadBooksFromJson(File): void
+    + saveBooksToJson(File): void
+}
+
+class Book <<Model>> {
+    + Book()
+    + Book(title, author, isbn, genre, rating, status)
+    + toString(): String
+}
+
+class Library <<Model>> {
+    + Library()
+    + Library(List<Book>)
+    + getBookByIsbn(String): Book
+    + addBook(Book)
+    + removeBook(String)
+    + updateBook(String, Book)
+}
+
+class SearchFilter <<Strategy>>{
+    - searchTerm: String
+    - searchByTitle: boolean
+    - readingStatusFilter: String
+    - minRating: Integer
+    + SearchFilter(searchTerm: String, readingStatusFilter: String, minRating: Integer)
+    + getSearchTerm()
+    + isSearchByTitle()
+    + getReadingStatusFilter()
+    + getMinRating()
+}
+
+
+Library "1" *-- "0..*" Book : contiene
+SearchFilter ..> Book : << filtra >>
+
+SortStrategyManager o-- SortStrategy
+
+LibraryGUI *-- BookTableModel
+LibraryGUI --> SearchDialog : creates
+
+LibraryGUI --> BookDialogTemplate : creates
+
+LibraryController --> LibrarySingleton : usa
+LibraryController --> SortStrategy : usa
+LibraryController --> SearchFilter : usa
+LibraryController --> CommandInterface : usa
+LibraryController --> SearchStrategy : usa
+
+LibrarySingleton *-- Library
+LibrarySingleton --> JsonHandler
+
+LibraryGUI *-- LibraryController
+LibraryGUI *-- SortStrategyManager
+
+SearchDialog --> SearchFilter
+
+@enduml

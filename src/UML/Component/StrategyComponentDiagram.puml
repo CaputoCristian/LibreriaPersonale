@@ -52,11 +52,12 @@ package "Strategy" {
         }
 
         class SortStrategyManager {
-            - currentStrategyIndex: int
             - strategies: List<SortStrategy>
+            - currentIndex: int
             + SortStrategyManager()
             + nextStrategy(): SortStrategy
             + getCurrentStrategy(): SortStrategy
+            + setCurrentStrategy(strategyIndex: int): void
         }
     }
 }

@@ -18,7 +18,7 @@ skinparam componentStyle uml2
 [Strategy] <<component>>
 
 ' Relazioni
-[LibraryGUI] -(0- [LibraryController]
+[LibraryGUI] -- [LibraryController]
 
 [LibraryController] -(0- [Command]
 [LibraryController] -(0- [Strategy]
