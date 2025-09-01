@@ -37,6 +37,16 @@ public abstract class BookDialogTemplate extends JDialog {
 
         confirmButton.addActionListener(e -> onConfirm());
         cancelButton.addActionListener(e -> dispose());
+
+        titleField.setName("titleField");
+        authorField.setName("authorField");
+        isbnField.setName("isbnField");
+        genreField.setName("genreField");
+        ratingField.setName("ratingField");
+        statusCombo.setName("statusCombo");
+        confirmButton.setName("confirmButton");
+        cancelButton.setName("cancelButton");
+
     }
 
     protected boolean validateFields() {
@@ -58,8 +68,14 @@ public abstract class BookDialogTemplate extends JDialog {
         }
 
         // Rating valido
+        try {
             int rating = Integer.parseInt(ratingField.getText().trim());
             if (rating < 0 || rating > 5) {
+                JOptionPane.showMessageDialog(this, "Il rating deve essere un numero intero tra 0 e 5.",
+                        "Rating non valido", JOptionPane.ERROR_MESSAGE);
+                return false;
+            }
+        } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(this, "Il rating deve essere un numero intero tra 0 e 5.",
                     "Rating non valido", JOptionPane.ERROR_MESSAGE);
             return false;

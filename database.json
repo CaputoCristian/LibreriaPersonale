@@ -11,21 +11,21 @@
     "author" : "Umberto Eco",
     "isbn" : "9788804498511",
     "genre" : "Giallo storico",
-    "rating" : 3,
-    "readingStatus" : "letto"
+    "rating" : 1,
+    "readingStatus" : "Letto"
   }, {
     "title" : "Fahrenheit 451",
     "author" : "Ray Bradbury",
     "isbn" : "9788804780373",
     "genre" : "Distopica",
-    "rating" : 5,
-    "readingStatus" : "Da leggere"
+    "rating" : 2,
+    "readingStatus" : "Letto"
   }, {
     "title" : "Il signore degli anelli",
     "author" : "J.R.R. Tolkien",
     "isbn" : "9788804668235",
     "genre" : "Fantasy epico",
-    "rating" : 5,
+    "rating" : 0,
     "readingStatus" : "Da leggere"
   }, {
     "title" : "La coscienza di Zeno",
@@ -40,20 +40,27 @@
     "isbn" : "9788807900202",
     "genre" : "Filosofia teoretica",
     "rating" : 3,
-    "readingStatus" : "Da leggere"
+    "readingStatus" : "In lettura"
   }, {
     "title" : "Il mondo come volontà e rappresentazione",
     "author" : "Arthur Schopenhauer",
     "isbn" : "9788807900219",
     "genre" : "Filosofia",
-    "rating" : 4,
+    "rating" : 0,
     "readingStatus" : "Da leggere"
   }, {
-    "title" : "Prova",
-    "author" : "Prova",
+    "title" : "Romanzi e racconti",
+    "author" : "Howard P. Lovecraft",
+    "isbn" : "8883374215",
+    "genre" : "Horror",
+    "rating" : 5,
+    "readingStatus" : "Letto"
+  }, {
+    "title" : "Divina Commedia",
+    "author" : "Dante Alighieri",
     "isbn" : "0123456789",
-    "genre" : "No",
-    "rating" : 1,
+    "genre" : "Narrativa",
+    "rating" : 5,
     "readingStatus" : "Letto"
   } ]
 }

@@ -1,12 +1,11 @@
 @startuml Singleton Component Diagram
 
 skinparam class {
-    BackgroundColor<<Singleton>> LightBlue
-    BackgroundColor<<Template>> LightGreen
+    BackgroundColor LightBlue
 }
 
 package "Singleton" {
-    class LibrarySingleton <<Singleton>> {
+    class LibrarySingleton {
         - {static} instance: LibrarySingleton
         - library: Library
         - jsonFile: File

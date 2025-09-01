@@ -66,8 +66,8 @@ public class LibraryGUI extends JFrame {
 
             List<Book> sorted = libraryController.sortBooks(sortManager.getCurrentStrategy());
 
-            BookTableModel model = new BookTableModel(sorted);
-            bookTable.setModel(model);
+            tableModel.setBooks(sorted);
+
         });
 
         addButton.addActionListener(e -> {
@@ -133,13 +133,11 @@ public class LibraryGUI extends JFrame {
 
         sortButton.addActionListener(e -> {
             SortStrategy strategy = sortManager.nextStrategy();
-
             sortButton.setText("Ordina per " + strategy.getName());
 
             List<Book> sorted = libraryController.sortBooks(strategy);
+            tableModel.setBooks(sorted);
 
-            BookTableModel model = new BookTableModel(sorted);
-            bookTable.setModel(model);
         });
 
         searchButton.addActionListener(e -> {
@@ -147,8 +145,10 @@ public class LibraryGUI extends JFrame {
             SearchFilter filter = dialog.showDialog();
 
                 List<Book> results = libraryController.searchBooks(filter);
+                if (results != null) {
+                    tableModel.setBooks(results);
+                }
 
-                tableModel.setBooks(results);
         });
         loadBooks();
     }
@@ -157,7 +157,6 @@ public class LibraryGUI extends JFrame {
         LibrarySingleton.getInstance().loadBooksFromJson();
         List<Book> books = LibrarySingleton.getInstance().getLibrary().getBooks();
         tableModel.setBooks(books);
-
     }
 
     public static void main(String[] args) {

@@ -2,8 +2,6 @@ package org.libreria.singleton;
 
 import org.libreria.model.Book;
 import org.libreria.model.Library;
-import org.libreria.strategy.SearchStrategy.SearchStrategy;
-import org.libreria.strategy.SortStrategy.SortStrategy;
 import org.libreria.util.JsonHandler;
 
 import java.io.File;
@@ -29,7 +27,6 @@ public class LibrarySingleton {
     public void setSource(File jsonFile) {
         this.jsonFile = jsonFile;
     }
-
 
     public Library getLibrary() {
         return library;

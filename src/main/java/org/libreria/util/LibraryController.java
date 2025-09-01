@@ -18,16 +18,9 @@ import java.util.List;
 
 public class LibraryController {
 
-//    private final Library library;
-
     public LibraryController() {
         LibrarySingleton.getInstance().loadBooksFromJson();
-//        this.library = LibrarySingleton.getInstance().getLibrary();
     }
-
-//    public List<Book> getAllBooks() {
-//        return library.getBooks();
-//    }
 
     public void addBook(Book newBook) {
         CommandInterface command = new AddBookCommand(newBook);
@@ -48,17 +41,6 @@ public class LibraryController {
     }
 
     public List<Book> searchBooks(SearchFilter filter) {
-//        SearchStrategy base = filter.isSearchByTitle()
-//                ? new TitleSearchStrategy()
-//                : new AuthorSearchStrategy();
-//
-//        SearchStrategy full = new FilteredSearchStrategy(
-//                base,
-//                filter.getReadingStatusFilter(),
-//                filter.getMinRating()
-//        );
-//
-//        return LibrarySingleton.getInstance().search(library.getBooks(), filter.getSearchTerm(), full);
 
         if (filter != null) {
             SearchStrategy baseStrategy = filter.isSearchByTitle()
@@ -70,10 +52,6 @@ public class LibraryController {
                     filter.getReadingStatusFilter(),
                     filter.getMinRating()
             );
-
-//            LibrarySingleton.getInstance().setSearchStrategy(fullStrategy);
-
-//            return LibrarySingleton.getInstance().search(library.getBooks(), filter.getSearchTerm());
             return fullStrategy.search(LibrarySingleton.getInstance().getLibrary().getBooks(), filter.getSearchTerm());
         }
 
@@ -81,7 +59,6 @@ public class LibraryController {
     }
 
     public List<Book> sortBooks(SortStrategy strategy) {
-//        return strategy.sort(library.getBooks());
         return strategy.sort(LibrarySingleton.getInstance().getLibrary().getBooks());
     }
 

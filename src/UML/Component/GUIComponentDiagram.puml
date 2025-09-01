@@ -1,7 +1,7 @@
 @startuml GUI and Template Component Diagram
 
 skinparam class {
-    BackgroundColor <<GUI>> LightBlue
+    BackgroundColor<<GUI>> LightBlue
     BackgroundColor<<Template>> LightGreen
 }
 

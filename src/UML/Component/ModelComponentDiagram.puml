@@ -2,8 +2,6 @@
 
 skinparam class {
     BackgroundColor LightYellow
-    BorderColor Black
-    ArrowColor Black
 }
 
 package "Model" {

@@ -16,8 +16,8 @@ participant "Library" as Lib
 participant "JsonHandler" as Json
 participant "BookTableModel" as Model
 
-User -> GUI: click "Aggiungi"
 activate GUI
+User -> GUI: click "Aggiungi"
 
 GUI -> Dialog: new AddBookDialog()
 activate Dialog
@@ -34,10 +34,16 @@ Controller -> Command: new AddBookCommand(library, newBook)
 activate Command
 
 Controller -> Command: execute()
-Command -> Lib: addBook(newBook)
+Command -> Singleton: addBook(newBook)
+activate Singleton
+
+Singleton -> Lib: addBook(newBook)
 activate Lib
-Lib --> Command: success
+Lib --> Singleton: success
 deactivate Lib
+
+Singleton --> Command: success
+deactivate Singleton
 
 Command --> Controller: success
 deactivate Command

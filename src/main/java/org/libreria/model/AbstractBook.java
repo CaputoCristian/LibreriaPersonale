@@ -51,7 +51,7 @@ public abstract class AbstractBook {
 
         // Verifica che ci siano solo numeri (e possibilmente X alla fine per ISBN-10)
         if (!cleanIsbn.matches("^\\d{10}$|^\\d{13}$|^\\d{9}X$")) {
-            throw new IllegalArgumentException("ISBN non valido. Deve contenere 10 o 13 cifre, con eventuali trattini.");
+            throw new IllegalArgumentException("ISBN non valido. Deve contenere 10 o 13 cifre, senza trattini.");
         }
 
         this.isbn = isbn;

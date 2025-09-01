@@ -10,20 +10,45 @@ skinparam sequence {
 actor User
 participant "LibraryGUI" as GUI
 participant "LibraryController" as Controller
-participant "SortStrategyManager" as Manager
-participant "SortStrategy" as Strategy
-participant "BookTableModel" as Model
+participant "SearchDialog" as Dialog
+participant "SearchFilter" as Filter
+participant "SearchStrategy" as Search
+participant "FilteredSearchStrategy" as FilteredSearch
+participant "LibrarySingleton" as Singleton
+participant "Library" as Library
 
-User -> GUI: click "Ordina"
 activate GUI
+User -> GUI: click "Cerca"
 
-GUI -> Manager: nextStrategy()
-activate Manager
-Manager -> GUI: return strategy
-deactivate Manager
+GUI -> Dialog: new SearchDialog(this)
+activate Dialog
+User -> Dialog: inserisce dati ricerca
+Dialog -> GUI: return searchFilter
+deactivate Dialog
 
-GUI --> Controller: sortBooks(strategy)
+GUI --> Controller: searchBooks(filter)
 activate Controller
+
+alt filter != null
+    Controller -> Filter: isSearchByTitle()
+    alt searchByTitle == true
+        Controller -> Search: new TitleSearchStrategy()
+    else searchByTitle == false
+        Controller -> Search: new AuthorSearchStrategy()
+    end
+
+    Controller -> FilteredSearch: new FilteredSearchStrategy(baseStrategy,\n readingStatusFilter, minRating)
+
+    activate FilteredSearch
+    Controller -> FilteredSearch: search(books, searchTerm)
+    FilteredSearch --> Controller: risultati filtrati
+    deactivate FilteredSearch
+
+    Controller --> GUI: ritorna lista di risultati
+else
+    Controller --> GUI: ritorna null
+end
+
 
 Controller --> Strategy: sort(library.getBooks())
 activate Strategy

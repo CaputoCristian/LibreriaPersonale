@@ -1,9 +1,7 @@
 @startuml Util Diagram
 
 skinparam class {
-    BackgroundColor<<Utility>> LightGray
-    BorderColor Black
-    ArrowColor Black
+    BackgroundColor LightGray
 }
 
 package "util" {

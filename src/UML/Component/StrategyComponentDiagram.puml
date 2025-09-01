@@ -1,26 +1,27 @@
 @startuml Strategy Diagram
 
+left to right direction
+
 skinparam class {
-    BackgroundColor<<Strategy>> LightGreen
-    BorderColor Black
-    ArrowColor Black
+    BackgroundColor<<Sort>> LightGreen
+    BackgroundColor<<Search>> LightYellow
 }
 
 package "Strategy" {
     package "SearchStrategyPackage" {
-        interface SearchStrategy {
+        interface SearchStrategy <<Search>> {
             + search(books: List<Book>, keyword: String): List<Book>
         }
 
-        class TitleSearchStrategy {
+        class TitleSearchStrategy <<Search>> {
             + search(books: List<Book>, keyword: String): List<Book>
         }
 
-        class AuthorSearchStrategy {
+        class AuthorSearchStrategy <<Search>> {
             + search(books: List<Book>, keyword: String): List<Book>
         }
 
-        class FilteredSearchStrategy {
+        class FilteredSearchStrategy <<Search>> {
             - baseStrategy: SearchStrategy
             - statusFilter: String
             - minRating: Integer
@@ -30,28 +31,28 @@ package "Strategy" {
     }
 
     package "SortStrategyPackage" {
-        interface SortStrategy {
+        interface SortStrategy <<Sort>> {
             + sort(books: List<Book>): List<Book>
             + getName(): String
         }
 
-        class AuthorSortStrategy {
+        class AuthorSortStrategy <<Sort>> {
             + sort(books: List<Book>): List<Book>
             + getName(): String
         }
 
-        class TitleSortStrategy {
+        class TitleSortStrategy <<Sort>> {
             + sort(books: List<Book>): List<Book>
             + getName(): String
         }
 
 
-        class InsertionSortStrategy {
+        class InsertionSortStrategy <<Sort>> {
             + sort(books: List<Book>): List<Book>
             + getName(): String
         }
 
-        class SortStrategyManager {
+        class SortStrategyManager <<Sort>> {
             - strategies: List<SortStrategy>
             - currentIndex: int
             + SortStrategyManager()

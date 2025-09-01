@@ -2,6 +2,8 @@
 
 skinparam componentStyle uml2
 
+left to right direction
+
 ' GUI
 [LibraryGUI] <<component>>
 
@@ -23,6 +25,6 @@ skinparam componentStyle uml2
 [LibraryController] -(0- [Command]
 [LibraryController] -(0- [Strategy]
 
-[Command] -(0- [JsonManager]
+[Command] --> [JsonManager]
 
 @enduml

@@ -45,13 +45,13 @@ public class SearchDialog extends JDialog {
 
         // Stato di lettura
         panel.add(new JLabel("Stato di lettura:"));
-        String[] stati = {"", "letto", "in lettura", "da leggere"};
+        String[] stati = {"", "Letto", "In lettura", "Da leggere"};
         statusCombo = new JComboBox<>(stati);
         panel.add(statusCombo);
 
         // Valutazione minima
         panel.add(new JLabel("Valutazione minima:"));
-        Integer[] ratings = {null, 1, 2, 3, 4, 5};
+        Integer[] ratings = {null, 0, 1, 2, 3, 4, 5};
         ratingCombo = new JComboBox<>(ratings);
         panel.add(ratingCombo);
 
@@ -64,6 +64,15 @@ public class SearchDialog extends JDialog {
         buttons.add(cancelButton);
         add(buttons, BorderLayout.SOUTH);
 
+        searchField.setName("searchField");
+        titleRadio.setName("titleRadio");
+        authorRadio.setName("authorRadio");
+        statusCombo.setName("statusCombo");
+        ratingCombo.setName("ratingCombo");
+        statusCombo.setName("statusCombo");
+        searchButton.setName("searchButton");
+        cancelButton.setName("cancelButton");
+
         // Eventi
         searchButton.addActionListener(e -> {
             String term = searchField.getText().trim();
@@ -72,8 +81,6 @@ public class SearchDialog extends JDialog {
             Integer minRating = (Integer) ratingCombo.getSelectedItem();
 
             if (term.isEmpty()) {
-//                JOptionPane.showMessageDialog(this, "Inserisci un termine di ricerca");
-//                return;
                 term = ""; //Permette la ricerca solo per filtro, senza autore o titolo
             }
 

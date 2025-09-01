@@ -14,8 +14,8 @@ participant "SortStrategyManager" as Manager
 participant "SortStrategy" as Strategy
 participant "BookTableModel" as Model
 
-User -> GUI: click "Ordina"
 activate GUI
+User -> GUI: click "Ordina"
 
 GUI -> Manager: nextStrategy()
 activate Manager
