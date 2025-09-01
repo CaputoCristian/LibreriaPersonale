@@ -19,7 +19,7 @@ public class LibraryGUI extends JFrame {
 
     private JTable bookTable;
     private BookTableModel tableModel;
-    private JButton addButton, editButton, deleteButton, searchButton, sortButton, refreshButton;
+    private JButton addButton, editButton, deleteButton, searchButton, sortButton, refreshButton, undoButton;
 
     private LibraryController libraryController;
 
@@ -48,7 +48,9 @@ public class LibraryGUI extends JFrame {
         searchButton = new JButton("Cerca");
         sortButton = new JButton("Ordina per " + sortManager.getCurrentStrategy().getName());
         refreshButton = new JButton("Ricarica");
+        undoButton = new JButton("Undo");
 
+        buttonPanel.add(undoButton);
         buttonPanel.add(addButton);
         buttonPanel.add(editButton);
         buttonPanel.add(deleteButton);
@@ -150,6 +152,12 @@ public class LibraryGUI extends JFrame {
                 }
 
         });
+
+        undoButton.addActionListener(e -> {
+            libraryController.undo();
+            loadBooks();
+        });
+
         loadBooks();
     }
 

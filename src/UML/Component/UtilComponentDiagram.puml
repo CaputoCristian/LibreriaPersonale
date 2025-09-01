@@ -13,6 +13,7 @@ package "util" {
     }
 
     class LibraryController {
+    - lastCommand: lastCommand
     + LibraryController()
     + getAllBooks(): List<Book>
     + addBook(newBook: Book): void
@@ -21,6 +22,7 @@ package "util" {
     + searchBooks(filter: SearchFilter): List<Book>
     + sortBooks(strategy: SortStrategy): List<Book>
     + save(): void
+    + undo(): void
     }
 }
 

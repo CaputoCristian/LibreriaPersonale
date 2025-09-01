@@ -7,7 +7,6 @@ public class UpdateBookCommand implements CommandInterface {
 
     private final Book updatedBook;
 
-    private Book oldBookBackup;
     private Book bookToUpdate;
 
     public UpdateBookCommand(Book updatedBook) {
@@ -31,16 +30,14 @@ public class UpdateBookCommand implements CommandInterface {
                 bookToUpdate.getRating(),
                 bookToUpdate.getReadingStatus()
         );
-
         LibrarySingleton.getInstance().updateBook(bookToUpdate.getIsbn(), updatedBook);
-
 
     }
 
     @Override
     public void undo() {
-        if (oldBookBackup != null) {
-            LibrarySingleton.getInstance().updateBook(oldBookBackup.getIsbn(), oldBookBackup);
+        if (bookToUpdate != null) {
+            LibrarySingleton.getInstance().updateBook(bookToUpdate.getIsbn(), bookToUpdate);
         }
     }
 }

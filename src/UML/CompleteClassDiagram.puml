@@ -108,6 +108,7 @@ class JsonHandler <<Util>> {
 }
 
 class LibraryController <<Controller>> {
+    - lastCommand: lastCommand
     + LibraryController()
     + getAllBooks(): List<Book>
     + addBook(newBook: Book): void
@@ -116,6 +117,7 @@ class LibraryController <<Controller>> {
     + searchBooks(filter: SearchFilter): List<Book>
     + sortBooks(strategy: SortStrategy): List<Book>
     + save(): void
+    + undo(): void
 }
 
 class LibrarySingleton <<Singleton>> {

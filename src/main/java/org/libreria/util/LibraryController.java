@@ -18,6 +18,8 @@ import java.util.List;
 
 public class LibraryController {
 
+    CommandInterface lastCommand;
+
     public LibraryController() {
         LibrarySingleton.getInstance().loadBooksFromJson();
     }
@@ -25,18 +27,21 @@ public class LibraryController {
     public void addBook(Book newBook) {
         CommandInterface command = new AddBookCommand(newBook);
         command.execute();
+        lastCommand = command;
         save();
     }
 
     public void updateBook(Book updatedBook) {
         CommandInterface command = new UpdateBookCommand(updatedBook);
         command.execute();
+        lastCommand = command;
         save();
     }
 
     public void deleteBook(String isbn) {
         CommandInterface command = new DeleteBookCommand(isbn);
         command.execute();
+        lastCommand = command;
         save();
     }
 
@@ -65,4 +70,13 @@ public class LibraryController {
     private void save() {
         LibrarySingleton.getInstance().saveBooksToJson();
     }
+
+    public void undo() {
+        if (lastCommand != null) {
+            lastCommand.undo();
+            save();
+            lastCommand = null;
+        }
+    }
+
 }
