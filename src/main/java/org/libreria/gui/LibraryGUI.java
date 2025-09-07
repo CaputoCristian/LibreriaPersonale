@@ -23,7 +23,8 @@ public class LibraryGUI extends JFrame {
 
     private LibraryController libraryController;
 
-    private final SortStrategyManager sortManager = new SortStrategyManager(); //Necessario qua e non nel controller, per nome sul tasto
+    //Necessario qua e non nel controller, per gestire la rotazione e la visualizzazione della modalità
+    private final SortStrategyManager sortManager = new SortStrategyManager();
 
     public LibraryGUI() {
         setTitle("Gestione Libreria Personale");
@@ -33,7 +34,7 @@ public class LibraryGUI extends JFrame {
 
         libraryController = new LibraryController();
 
-        bookTable = new JTable(); // inizializzazione base
+        bookTable = new JTable();
         bookTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         tableModel = new BookTableModel(LibrarySingleton.getInstance().getLibrary().getBooks());
@@ -78,8 +79,7 @@ public class LibraryGUI extends JFrame {
             if (newBook != null) {
 
                 libraryController.addBook(newBook);
-                loadBooks(); //Aumenta la complessità temporale, spesso è superfluo rileggere da file, ma se così si è sicuri dell'aggiunta: si evita di aggiungere alla lista libri
-                             //che per qualsiasi motivo non sono stati salvati (e non hanno sollevato errori)
+                loadBooks();
             }
             loadBooks();
         });
@@ -93,8 +93,7 @@ public class LibraryGUI extends JFrame {
                 if (updatedBook != null) {
 
                     libraryController.updateBook(updatedBook);
-                    loadBooks(); //Aumenta la complessità temporale, spesso è superfluo rileggere da file, ma se così si è sicuri dell'aggiunta: si evita di aggiungere alla lista libri
-                    //che per qualsiasi motivo non sono stati salvati (e non hanno sollevato errori)
+                    loadBooks();
                 }
             } else {
                 JOptionPane.showMessageDialog(this, "Seleziona un libro da modificare.", "Nessuna selezione", JOptionPane.WARNING_MESSAGE);

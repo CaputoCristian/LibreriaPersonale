@@ -5,7 +5,6 @@ import org.libreria.command.CommandInterface;
 import org.libreria.command.DeleteBookCommand;
 import org.libreria.command.UpdateBookCommand;
 import org.libreria.model.Book;
-import org.libreria.model.Library;
 import org.libreria.model.SearchFilter;
 import org.libreria.singleton.LibrarySingleton;
 import org.libreria.strategy.SearchStrategy.AuthorSearchStrategy;

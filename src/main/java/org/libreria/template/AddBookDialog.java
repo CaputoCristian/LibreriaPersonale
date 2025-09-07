@@ -34,7 +34,7 @@ public class AddBookDialog extends BookDialogTemplate {
             newBook = new Book();
             newBook.setTitle(titleField.getText().trim());
             newBook.setAuthor(authorField.getText().trim());
-            newBook.setIsbn(isbn);                           //già definito sopra per controllo
+            newBook.setIsbn(isbn);                           //già definito sopra per controllo duplicati
             newBook.setGenre(genreField.getText().trim());
             newBook.setRating(Integer.parseInt(ratingField.getText().trim()));
             newBook.setReadingStatus(statusCombo.getSelectedItem().toString());

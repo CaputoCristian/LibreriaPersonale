@@ -49,7 +49,7 @@ public abstract class AbstractBook {
         // Rimuovi tutti i trattini e spazi per la validazione
         String cleanIsbn = isbn.replaceAll("[-\\s]", "");
 
-        // Verifica che ci siano solo numeri (e possibilmente X alla fine per ISBN-10)
+        // Verifica che ci siano solo numeri e al massimo una X alla fine per alcuni ISBN
         if (!cleanIsbn.matches("^\\d{10}$|^\\d{13}$|^\\d{9}X$")) {
             throw new IllegalArgumentException("ISBN non valido. Deve contenere 10 o 13 cifre, senza trattini.");
         }

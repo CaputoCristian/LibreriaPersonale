@@ -19,7 +19,7 @@ public class UpdateBookDialog extends BookDialogTemplate {
         ratingField.setText(String.valueOf(bookToEdit.getRating()));
         statusCombo.setSelectedItem(bookToEdit.getReadingStatus());
 
-//        isbnField.setEnabled(false); // non modificabile
+        isbnField.setEnabled(false); // Non modificabile. In caso di typo durante l'inserimento è necessario eliminare e riaggiungere il libro.
     }
 
     @Override

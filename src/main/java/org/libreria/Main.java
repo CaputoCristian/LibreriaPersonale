@@ -9,10 +9,8 @@ import java.io.File;
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) {
-        File jsonFile = new File("database.json");
+        File jsonFile = new File("src/main/resources/database.json");
         LibrarySingleton.getInstance().setSource(jsonFile);
         new LibraryGUI().setVisible(true);
-
-
     }
 }

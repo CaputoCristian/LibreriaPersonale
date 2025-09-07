@@ -15,13 +15,13 @@ public class UpdateBookCommand implements CommandInterface {
     @Override
     public void execute() {
 
-        // Cerca il libro da aggiornare tramite ISBN (immutabile) per backup e per controllare che esista
+        // Cerca nel database il libro originale tramite isbn (immutabile)
         bookToUpdate = LibrarySingleton.getInstance().getLibrary().getBooks().stream()
                 .filter(b -> b.getIsbn().equals(updatedBook.getIsbn()))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("Book not found with ISBN: " + updatedBook.getIsbn()));
 
-        // Backup profondo (deep copy)
+        // Backup profondo
         bookToUpdate = new Book(
                 bookToUpdate.getTitle(),
                 bookToUpdate.getAuthor(),

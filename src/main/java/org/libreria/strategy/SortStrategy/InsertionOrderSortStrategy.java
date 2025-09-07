@@ -8,7 +8,7 @@ import java.util.List;
 public class InsertionOrderSortStrategy implements SortStrategy {
     @Override
     public List<Book> sort(List<Book> books) {
-        return new ArrayList<>(books); // Di default si visualizzano come sono caricati, nessuna azione da effettuare, no ordinamento
+        return new ArrayList<>(books); // Di default si visualizzano come sono caricati, no ordinamento
     }
 
     @Override

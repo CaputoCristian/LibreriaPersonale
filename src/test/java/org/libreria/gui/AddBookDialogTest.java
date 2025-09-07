@@ -1,6 +1,5 @@
-package org.libreria.template;
+package org.libreria.gui;
 
-import static org.junit.Assert.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.assertj.swing.edt.FailOnThreadViolationRepaintManager;
@@ -14,6 +13,7 @@ import javax.swing.*;
 import org.assertj.swing.core.BasicRobot;
 import org.assertj.swing.core.Robot;
 import org.libreria.singleton.LibrarySingleton;
+import org.libreria.template.AddBookDialog;
 
 import java.util.concurrent.atomic.AtomicReference;
 

@@ -1,0 +1,41 @@
+@startuml
+left to right direction
+
+actor Utente
+
+rectangle "Sistema Libreria" {
+    usecase "Aggiungi libro" as UC_Add
+    usecase "Modifica libro" as UC_Edit
+    usecase "Elimina libro" as UC_Delete
+    usecase "Ricerca libro" as UC_Search
+    usecase "Ordina libri" as UC_Sort
+    usecase "Validazione dati" as UC_validate <<include>>
+    usecase "Aggiorna file" as UC_File <<include>>
+
+
+
+    note right of UC_File
+            Gestisce il salvataggio delle modifiche
+            nel file di persistenza dei dati
+        endnote
+
+
+}
+
+' Relazioni utente-caso d'uso
+Utente --> UC_Add
+Utente --> UC_Edit
+Utente --> UC_Delete
+Utente --> UC_Search
+Utente --> UC_Sort
+
+' Relazioni include per la validazione
+UC_Add --> UC_validate : <<include>>
+UC_Edit --> UC_validate : <<include>>
+
+' Relazioni include per l'aggiornamento del file
+UC_Add --> UC_File : <<include>>
+UC_Edit --> UC_File : <<include>>
+UC_Delete --> UC_File : <<include>>
+
+@enduml
